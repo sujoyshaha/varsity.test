@@ -12,9 +12,20 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+
+
+Route::group(['prefix' => 'admin'], function () {
+Route::get('/', 'DashboardController@adminHome')->name('admin-dashboard');
+Route::get('user-profile', 'DashboardController@userProfile')->name('user-profile');
+
+// Route::get('change-pass', 'DashboardController@getPass')->name('change-pass');
+Route::post('change-pass', 'DashboardController@postPass')->name('post-pass');
+Route::post('user-edit', 'DashboardController@updateuserProfile')->name('update-user');
+
+});
