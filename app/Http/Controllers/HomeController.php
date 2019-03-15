@@ -23,6 +23,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('backend.admin-dashboard');
+        $data['title'] = "Dashboard";
+        return view('backend.admin-dashboard',$data);
+
+
+       
+
     }
 }

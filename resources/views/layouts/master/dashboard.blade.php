@@ -32,6 +32,9 @@
         <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet" type="text/css" />
 
         <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet"  type="text/css" />
+
+        @yield('academic-css')
+
         <!-- endbuild -->
 
     </head>
@@ -43,7 +46,68 @@
         @include('layouts.master.dashboard-header')
         @include('layouts.master.dashboard-sidebar')
 
+
+        <!-- Page Content Start -->
+            <div class="content-page">
+                <div class="content">
+                    <div class="container-fluid">
+
+
+                        <div class="row">
+    <div class="col-lg-12">
+
+        <!--  ==================================SESSION MESSAGES==================================  -->
+        @if (session()->has('message'))
+            <div class="alert alert-{!! session()->get('type')  !!} alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {!! session()->get('message')  !!}
+            </div>
+        @endif
+    <!--  ==================================SESSION MESSAGES==================================  -->
+
+
+    <!--  ==================================VALIDATION ERRORS==================================  -->
+        @if($errors->any())
+            @foreach ($errors->all() as $error)
+
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {!!  $error !!}
+                </div>
+
+        @endforeach
+     @endif
+    <!--  ==================================SESSION MESSAGES==================================  -->
+
+  </div></div>
+
+                        <!-- Page title box -->
+                        <div class="page-title-box">
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">Greeva</a></li>
+                                <li class="breadcrumb-item active">{{$title}}</li>
+                            </ol>
+                            <h4 class="page-title">{{$title}}</h4>
+                        </div>
+                        <!-- End page title box -->
+
         @yield('backend-content')
+
+    <!-- end row -->            
+
+                    </div>
+                </div>
+            </div>
+            <!-- End Page Content-->
+
+
+   
+
+
+
+        </div>
+        <!-- End #wrapper -->
+
 
         @include('layouts.master.dashboard-footer')
         @include('layouts.master.dashboard-rightbar')

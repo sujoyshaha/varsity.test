@@ -28,4 +28,31 @@ Route::get('user-profile', 'DashboardController@userProfile')->name('user-profil
 Route::post('change-pass', 'DashboardController@postPass')->name('post-pass');
 Route::post('user-edit', 'DashboardController@updateuserProfile')->name('update-user');
 
+
+Route::get('academic-years', 'AdminController@getAcademicYear')->name('academic-years');
+Route::post('add-academic-year', 'AdminController@postAcademicYear')->name('post-academic-year');
+Route::get('edit-academic-year/{id}', 'AdminController@editAcademicYear')->name('edit-academic-year');
+Route::post('update-academic-year/{id}', 'AdminController@updateAcademicYear')->name('update-academic-year');
+
+
+
+
+
+
+// departments-area
+
+
+Route::get('departments', 'AdminController@getDepartment')->name('departments');
+Route::post('add-department', 'AdminController@postDepartment')->name('post-department');
+Route::get('edit-department/{id}', 'AdminController@editDepartment')->name('edit-department');
+Route::post('update-department/{id}', 'AdminController@updateDepartment')->name('update-department');
+
+
+
+// Route::get('academic-years', 'AdminController@getAcademicYear')->name('academic-years');
+// // Route::get('add-academic-year', 'AdminController@addAcademicYear')->name('add-academic-year');
+// Route::post('add-academic-year', 'AdminController@postAcademicYear')->name('post-academic-year');
+// Route::get('edit-academic-year/{id}', 'AdminController@editAcademicYear')->name('edit-academic-year');
+// Route::post('edit-academic-year/{id}', 'AdminController@updateAcademicYear')->name('update-academic-year');
+
 });

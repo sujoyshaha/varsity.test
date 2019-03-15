@@ -16,6 +16,18 @@
                                 </a>
                             </li>
 
+                            <li>
+                                <a href="{{route('academic-years')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span> Academic Years </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('departments')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span> Departments </span>
+                                </a>
+                            </li>
+
+
                             {{-- <li>
                                 <a href="javascript: void(0);"><i class="mdi mdi-atom"></i> <span> UI Elements </span> <span class="menu-arrow"></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
