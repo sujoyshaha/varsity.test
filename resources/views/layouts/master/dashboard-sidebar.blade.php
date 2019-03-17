@@ -26,6 +26,11 @@
                                     <i class="mdi mdi-calendar-check"></i> <span> Departments </span>
                                 </a>
                             </li>
+                             <li>
+                                <a href="{{route('contributions')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span> Contributions </span>
+                                </a>
+                            </li>
 
 
                             {{-- <li>

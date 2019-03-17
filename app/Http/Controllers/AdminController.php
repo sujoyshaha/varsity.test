@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use App\AcademicYear;
 use App\Department;
+use App\Contribution;
+use App\ConPhoto;
 
 
 class AdminController extends Controller
@@ -123,56 +125,56 @@ class AdminController extends Controller
 
            $cartd = Carbon::today();
 
-      if ($acayear->opening_date !=$request->opening_date) {
-$differ = $cartd->diffInDays($request->opening_date, false);
+                  if ($acayear->opening_date !=$request->opening_date) {
+            $differ = $cartd->diffInDays($request->opening_date, false);
 
-if ($differ < 0) {
-session()->flash('message', 'Starting date can not be changed to older dates!');
-Session::flash('type', 'error');
-return redirect()->back();
-}
+            if ($differ < 0) {
+            session()->flash('message', 'Starting date can not be changed to older dates!');
+            Session::flash('type', 'error');
+            return redirect()->back();
+            }
 
-$od=Carbon::parse($request->opening_date);
-$cdiff = $od->diffInDays($request->closing_date, false);
+            $od=Carbon::parse($request->opening_date);
+            $cdiff = $od->diffInDays($request->closing_date, false);
 
-if ($cdiff < 1 && $acayear->closing_date ==$request->closing_date) {
-session()->flash('message', 'Opening date can not be later than the closing date!');
-Session::flash('type', 'error');
-return redirect()->back();
-}
-}
+            if ($cdiff < 1 && $acayear->closing_date ==$request->closing_date) {
+            session()->flash('message', 'Opening date can not be later than the closing date!');
+            Session::flash('type', 'error');
+            return redirect()->back();
+            }
+            }
 
 
-if ($acayear->closing_date !=$request->closing_date) {
-$od=Carbon::parse($request->opening_date);
-$cdiff = $od->diffInDays($request->closing_date, false);
+            if ($acayear->closing_date !=$request->closing_date) {
+            $od=Carbon::parse($request->opening_date);
+            $cdiff = $od->diffInDays($request->closing_date, false);
 
-if ($cdiff < 1) {
-session()->flash('message', 'Closing date can not be changed to older dates!');
-Session::flash('type', 'error');
-return redirect()->back();
-}
+            if ($cdiff < 1) {
+            session()->flash('message', 'Closing date can not be changed to older dates!');
+            Session::flash('type', 'error');
+            return redirect()->back();
+            }
 
-$cd=Carbon::parse($request->closing_date);
-$fdiff = $cd->diffInDays($acayear->final_date, false);
+            $cd=Carbon::parse($request->closing_date);
+            $fdiff = $cd->diffInDays($acayear->final_date, false);
 
-if ($fdiff < 1 && $acayear->final_date == $request->final_date) {
-session()->flash('message', 'The Closing date can not be changed to later than the final date!');
-Session::flash('type', 'error');
-return redirect()->back();
-}
-}
+            if ($fdiff < 1 && $acayear->final_date == $request->final_date) {
+            session()->flash('message', 'The Closing date can not be changed to later than the final date!');
+            Session::flash('type', 'error');
+            return redirect()->back();
+            }
+            }
 
-if ($acayear->final_date !=$request->final_date) {
-$cd=Carbon::parse($request->closing_date);
-$fdiff = $cd->diffInDays($request->final_date, false);
+            if ($acayear->final_date !=$request->final_date) {
+            $cd=Carbon::parse($request->closing_date);
+            $fdiff = $cd->diffInDays($request->final_date, false);
 
-if ($fdiff < 1) {
-session()->flash('message', 'The final date can not be changed to older dates!');
-Session::flash('type', 'error');
-return redirect()->back();
-}
-}
+            if ($fdiff < 1) {
+            session()->flash('message', 'The final date can not be changed to older dates!');
+            Session::flash('type', 'error');
+            return redirect()->back();
+            }
+            }
 
 
         $acayear['year'] = $request->year;
@@ -253,5 +255,104 @@ return redirect()->back();
         session()->flash('message', 'Academic Year Successfully updated!');
         Session::flash('type', 'success');
         return redirect()->back();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     public function getContribution()
+    {
+         $data['title'] = "Contribution";
+         $data['eroute'] = "edit-contribution";
+         $data['cns']= Contribution::orderBy('id','asc')->paginate(2);
+         $data['acys']= AcademicYear::orderBy('id','asc')->get();
+
+         return view('admin.contribution',$data);
+    }
+
+
+
+    public function postContribution( Request $request)
+    {
+      $this->validate($request,[
+            'title' => 'required',
+            'year' => 'required|exists:academic_years,year',
+            'doc' => 'required|file|mimes:doc,docx,pdf|max:5120',
+            'file' => 'required',
+            'file.*' => 'image|mimes:jpeg,png,svg,jpg,gif|max:2048',
+        ]);
+
+
+        $cn['title'] = $request->title;
+        $cn['year'] = $request->year;
+        $cn['file_name'] = $request->doc->getClientOriginalName();
+        $request->doc->store('public/upload');
+        // $cn['std_id'] = $request->title;
+
+        $files = $request->file('file');
+
+        $cn = Contribution::create($cn);
+        $lcn = $cn->id;
+
+        foreach ($files as $file) {
+             $img['con_id'] = $lcn;
+             $img['name'] = $file->getClientOriginalName();
+             $file->store('public/upload');
+               ConPhoto::create($img);
+         } 
+
+      
+
+
+
+
+
+        session()->flash('message', 'Contribution Successfully Added!');
+        Session::flash('type', 'success');
+        return redirect()->back();
+    }
+
+      public function editContribution($id)
+    {
+         $data['title'] = "Update Contribution";
+         $data['uroute'] = "update-contribution";
+         $data['cn']= Contribution::findOrFail($id);
+           $data['acys']= AcademicYear::orderBy('id','asc')->get();
+
+         return view('admin.edit-contribution',$data);
+    }
+
+
+     public function updateContribution($id, Request $request)
+    {
+
+        // $this->validate($request,[
+        //    'name' => 'required|string',
+        // ]);
+
+        //   $dp= Department::findOrFail($id);
+
+        //   $dp['name']= $request->name;
+
+
+           
+
+        // $dp->save();
+
+
+        // session()->flash('message', 'Academic Year Successfully updated!');
+        // Session::flash('type', 'success');
+        // return redirect()->back();
     }
 }

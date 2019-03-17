@@ -49,6 +49,13 @@ Route::post('update-department/{id}', 'AdminController@updateDepartment')->name(
 
 
 
+Route::get('contributions', 'AdminController@getContribution')->name('contributions');
+Route::post('add-contribution', 'AdminController@postContribution')->name('post-contribution');
+Route::get('edit-contribution/{id}', 'AdminController@editContribution')->name('edit-contribution');
+Route::post('update-contribution/{id}', 'AdminController@updateContribution')->name('update-contribution');
+
+
+
 // Route::get('academic-years', 'AdminController@getAcademicYear')->name('academic-years');
 // // Route::get('add-academic-year', 'AdminController@addAcademicYear')->name('add-academic-year');
 // Route::post('add-academic-year', 'AdminController@postAcademicYear')->name('post-academic-year');

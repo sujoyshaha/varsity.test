@@ -20,7 +20,6 @@
 @endsection
 
 
-               
  <div class="col-lg-12">
 
                    
@@ -47,10 +46,12 @@
                                         <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
-                                <th>Year</th>
-                                <th>Opening Date</th>
-                                <th>Closing Date</th>
-                                <th>Final Date</th>
+                                <th>Title</th>
+                                <th>Academic Year</th>
+                                <th>Date Submitted</th>
+                                <th>Status</th>
+                                <th>Time Left to Update File</th>
+                                
                                 {{-- <th>Progress</th> --}}
                                 {{-- <th style="width: 40px">Timeleft</th> --}}
                                 <th>Action</th>
@@ -58,14 +59,65 @@
                         </thead>
                         <tbody>
 
-                        @foreach($ays as $ay)
+                        @foreach($cns as $cn)
 
                           <tr>
-                            <td>{{ $ay->id }}</td>
-                            <td>{{ $ay->year }}</td>
-                            <td>{{ $ay->opening_date }}</td>
-                            <td>{{ $ay->closing_date }}</td>
-                            <td>{{ $ay->final_date }}</td>
+                            <td>{{ $cn->id }}</td>
+                            <td>{{ $cn->title }}</td>
+                            <td>{{ $cn->year }}</td>
+                            <td>{{ $cn->created_at }}</td>
+
+                               <td class="align-middle">
+
+                              @if($cn->status == 1)
+
+                              <span class="badge bg-primary text-white">Submitted</span>
+
+                              @elseif($cn->status == 2)
+
+                              <span class="badge bg-warning text-white">Commented</span>
+
+                              @elseif($cn->status == 3)
+
+                              <span class="badge bg-success text-white">Accepted</span>
+                              @else
+
+                              <span class="badge bg-danger text-white">Rejected</span>
+                              @endif
+
+                            </td>
+
+                           {{--  @php
+                                   $cdiff = Carbon\Carbon::today()->diffInDays($cn->acyear->closing_date, false);
+                                   $fdiff = Carbon\Carbon::today()->diffInDays($cn->acyear->final_date, false);
+                            @endphp
+
+
+                                 <td class="align-middle">
+
+                                
+                                <span class="badge
+                                @if($cdiff>0)
+
+                                bg-success
+                                    
+                                @elseif($fdiff>0)
+
+                                bg-warning
+
+                                @else
+                                 bg-danger
+
+                                @endif
+
+                                 ">
+                                 {{ $fdiff }} days
+                                </span>
+                              </td> --}}
+
+                         
+                         
+                            
                             {{-- <td>
                               <div class="progress progress-xs">
                                 <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
@@ -73,7 +125,7 @@
                             </td> --}}
                             {{-- <td><span class="badge bg-danger">55 days</span></td> --}}
 
-                            <td><a href="{{route($eroute, $ay->id)}}" class="btn btn-primary w-md"><i class="mdi mdi-square-edit-outline"></i> <span> Edit</span></a></td>
+                            <td><a href="{{route($eroute, $cn->id)}}" class="btn btn-primary w-md"><i class="mdi mdi-square-edit-outline"></i> <span> Edit</span></a></td>
                           </tr>
 
                         @endforeach
@@ -82,7 +134,7 @@
 
 
                                     </table>
-                                    {{$ays}}
+                                    {{$cns}}
                                 </div> <!-- end card-box -->
          
      
@@ -104,34 +156,50 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title" id="myModalLabel">Academic year</h4>
+                                                    <h4 class="modal-title" id="myModalLabel">Contributions</h4>
                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                 </div>
                                                 <div class="modal-body" >
                                                   
-                                                <form role="form" method="post" action="{{route('post-academic-year')}}">
+                                                <form role="form" method="post" action="{{route('post-contribution')}}" enctype="multipart/form-data">
 
                                                   @csrf
+
+                                             <div class="card-body">
+                                                    <div class="form-group">
+                             
+
+                                    <select class="form-control" id="role" name="year">
+                                      @foreach($acys as $acy)
+                                        <option value="{{$acy->year}}">{{$acy->year}}</option>
+
+                                           @endforeach
+                                       
+                                    </select>
+
+                            
+                            </div>
+                            </div>
+
+
+
                                                   <div class="card-body">
                                                     <div class="form-group">
-                                                      <label for="exampleInputEmail1">Academic Year</label>
-                                                      <input type="text" class="form-control" id="year" name="year" placeholder="2019" >
+                                                      <label for="exampleInputEmail1">contribution title</label>
+                                                      <input type="text" class="form-control" id="year" name="title" placeholder="2019" value=" {{old('title')}}">
                                                     </div>
                                                     <div class="form-group">
-                                                      <label for="exampleInputPassword1">Opening Date</label>
-                                                      <input type="date" class="form-control" id="opening-date" name="opening_date" placeholder="DD/MM" >
+                                                      <label for="exampleInputPassword1">contribution doc file</label>
+                                                      <input type="file" class="form-control" id="opening-date" name="doc" placeholder="DD/MM" value="{{old('doc')}}" >
                                                     </div>
 
                                                     <div class="form-group">
-                                                      <label for="exampleInputPassword1">Closing Date</label>
-                                                      <input type="date" class="form-control" id="closing-date" name="closing_date" placeholder="DD/MM" >
+                                                      <label for="exampleInputPassword1">Contribution photo</label>
+                                                      <input type="file" class="form-control" id="closing-date" name="file[]" placeholder="DD/MM" multiple="" value="{{old('files')}}">
                                                     </div>
 
 
-                                                    <div class="form-group">
-                                                      <label for="exampleInputPassword1">Final Date</label>
-                                                      <input type="date" class="form-control" id="final-date" name="final_date" placeholder="DD/MM" >
-                                                    </div>
+                                                  
 
 
                                                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</button>
