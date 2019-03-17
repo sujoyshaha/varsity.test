@@ -49,11 +49,8 @@
                                 <th>Title</th>
                                 <th>Academic Year</th>
                                 <th>Date Submitted</th>
-                                <th>Opening Date</th>
-                                <th>Closing Date</th>
-                                <th>Final Date</th>
                                 <th>Status</th>
-                                {{-- <th>Time Left to Update File</th> --}}
+                                <th>Time Left to Update File</th>
                                 
                                 {{-- <th>Progress</th> --}}
                                 {{-- <th style="width: 40px">Timeleft</th> --}}
@@ -69,12 +66,6 @@
                             <td>{{ $cn->title }}</td>
                             <td>{{ $cn->year }}</td>
                             <td>{{ $cn->created_at }}</td>
-
-                            <td class="align-middle">{{ $cn->ayear->opening_date }}</td>
-                            <td class="align-middle">{{ $cn->ayear->closing_date }}</td>
-                            <td class="align-middle">{{ $cn->ayear->final_date }}</td>
-
-
 
                                <td class="align-middle">
 
@@ -96,17 +87,13 @@
 
                             </td>
 
-                           @php
-                              // $odiff = Carbon\Carbon::today()->diffInDays($acayear->opening_date, false);
-                              // $cdiff = Carbon\Carbon::today()->diffInDays($con->acyear->closing_date, false);
-                              // $fdiff = Carbon\Carbon::today()->diffInDays($con->acyear->final_date, false);
-
-
-                           // $sdiff = Carbon\Carbon::today()->diffInDays($cn->opening_date, false);
-                                   $cdiff = Carbon\Carbon::today()->diffInDays($cn->ayear->closing_date, false);
-                                   $fdiff = Carbon\Carbon::today()->diffInDays($cn->ayear->final_date, false);
+                           {{--  @php
+                                   $cdiff = Carbon\Carbon::today()->diffInDays($cn->acyear->closing_date, false);
+                                   $fdiff = Carbon\Carbon::today()->diffInDays($cn->acyear->final_date, false);
                             @endphp
-                            <td class="align-middle">
+
+
+                                 <td class="align-middle">
 
                                 
                                 <span class="badge
@@ -125,9 +112,8 @@
 
                                  ">
                                  {{ $fdiff }} days
-                                </span></td>
-
-                            <td>
+                                </span>
+                              </td> --}}
 
                          
                          
@@ -216,9 +202,7 @@
                                                   
 
 
-                                                    
-                                                    {{-- <a href="{{ route('contributions') }}" class="btn btn-secondary" >Back</a> --}}
-                                                    <a href="{{ route('contributions') }}"class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</a>
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</button>
                                           <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add {{$title}}</button>
                                                     </div>
                                                  

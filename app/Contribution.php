@@ -11,9 +11,9 @@ class Contribution extends Model
     ];
 
 
-    public function acyear()
+    public function ayear()
     {
-    	return $this->belongsTo(AcademicYear::class, 'year');
+    	return $this->belongsTo(AcademicYear::class, 'year', 'year');
     }
 
 }
