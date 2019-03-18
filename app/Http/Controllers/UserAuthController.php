@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 
-class StudentAuthController extends Controller
+class UserAuthController extends Controller
 {
     public function getLogin()
     {
@@ -25,6 +25,19 @@ class StudentAuthController extends Controller
 
             // Authentication passed...
             return redirect('/student/contributions');
+        }
+
+
+
+
+        if (Auth::guard('faculty')->attempt([
+            'email' => $request->username,
+            'password' => $request->password,
+        ])
+        ) {
+
+            // Authentication passed...
+            return redirect('/faculty/contributions');
         }
 
         if (Auth::guard('admin')->attempt([

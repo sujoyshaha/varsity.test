@@ -18,11 +18,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('admin/login', 'AdminAuthController@getLogin')->name('admin-login');
-Route::get('/login', 'AdminAuthController@getLogin')->name('login');
-Route::post('admin/login', 'AdminAuthController@postLogin')->name('post-login-admin');
-Route::get('student/login', 'StudentAuthController@getLogin')->name('student-login');
-Route::post('student/login', 'StudentAuthController@postLogin')->name('post-student-login');
+Route::get('admin/login', 'UserAuthController@getLogin')->name('admin-login');
+Route::get('/login', 'UserAuthController@getLogin')->name('login');
+Route::post('admin/login', 'UserAuthController@postLogin')->name('post-login-admin');
+Route::get('student/login', 'UserAuthController@getLogin')->name('student-login');
+Route::post('student/login', 'UserAuthController@postLogin')->name('post-student-login');
 
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
@@ -86,5 +86,17 @@ Route::match(['get', 'post'], 'contributions', 'StudentController@getContributio
 Route::get('contribution/{id}', 'StudentController@getSingleContribution')->name('single-stdcontribution');
 
 // Route::post('contribution/{id}', 'StudentController@addComment')->name('add-stdcomment');
+
+});
+
+
+
+Route::group(['prefix' => 'faculty'], function() {
+
+
+Route::match(['get', 'post'], 'contributions', 'FacultyController@getContribution')->name('studentcontributions');
+
+
+Route::get('contribution/{id}', 'FacultyController@getSingleContribution')->name('single-stdcontribution');
 
 });
