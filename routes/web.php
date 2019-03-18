@@ -17,6 +17,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('admin/login', 'AdminAuthController@getLogin')->name('admin-login');
+Route::post('admin/login', 'AdminAuthController@postLogin')->name('post-login-admin');
+
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
 
