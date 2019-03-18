@@ -7,15 +7,25 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 
-class AdminAuthController extends Controller
+class StudentAuthController extends Controller
 {
     public function getLogin()
     {
-        $data['login'] = 'post-login-admin';
+        $data['login'] = 'post-student-login';
         return view('auth.login-admin', $data);
     }
     public function postLogin(Request $request)
     {
+
+        if (Auth::guard('student')->attempt([
+            'email' => $request->username,
+            'password' => $request->password,
+        ])
+        ) {
+
+            // Authentication passed...
+            return redirect('/student/contributions');
+        }
 
         if (Auth::guard('admin')->attempt([
             'username' => $request->username,
@@ -25,14 +35,6 @@ class AdminAuthController extends Controller
 
             // Authentication passed...
             return redirect('/admin/academic-years');
-        } elseif (Auth::guard('student')->attempt([
-            'username' => $request->username,
-            'password' => $request->password,
-        ])
-        ) {
-
-            // Authentication passed...
-            return redirect('/student/contributions');
         }
 
         $request->session()->flash('message', 'Login incorrect!');

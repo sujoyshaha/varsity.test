@@ -12,13 +12,17 @@
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+     $data['login'] = 'post-student-login';
+        return view('auth.login-admin', $data);
 });
 
 Auth::routes();
 
 Route::get('admin/login', 'AdminAuthController@getLogin')->name('admin-login');
+Route::get('/login', 'AdminAuthController@getLogin')->name('login');
 Route::post('admin/login', 'AdminAuthController@postLogin')->name('post-login-admin');
+Route::get('student/login', 'StudentAuthController@getLogin')->name('student-login');
+Route::post('student/login', 'StudentAuthController@postLogin')->name('post-student-login');
 
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 

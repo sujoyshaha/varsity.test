@@ -10,6 +10,7 @@ use App\AcademicYear;
 use App\Department;
 use App\Contribution;
 use App\ConPhoto;
+use Cookie;
 // use App\Auth;
 
 
@@ -23,6 +24,8 @@ class StudentController extends Controller
      */
     public function __construct()
     {
+         // $this->middleware('auth');
+        $this->middleware('auth:student');
     }
 
     /**
@@ -32,114 +35,232 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view('backend.admin-dashboard');
+        $data['title'] = "Academic Year";
+        return view('backend.admin-dashboard',$data);
     }
 
-    
-
-
-
-
-    //  public function getContribution()
-    // {
-    //      $data['title'] = "Contribution";
-    //      $data['eroute'] = "edit-contribution";
-    //      $data['cns']= Contribution::orderBy('id','asc')->paginate(2);
-    //      $data['acys']= AcademicYear::orderBy('id','asc')->get();
-
-    //      return view('admin.contribution',$data);
-    // }
-
-
-     public function getContribution(Request $request)
+    public function getAcademicYear()
     {
-        $data['title'] = "Contribution";
-        $data['route'] = "post-stdcontribution";
-        $data['eroute'] = "edit-stdcontribution";
-        $data['sroute'] = "single-stdcontribution";
-        $data['yroute'] = "stdcontributions-year";
+         $data['title'] = "Academic Year";
+         $data['eroute'] = "edit-academic-year";
+         $data['ays']= AcademicYear::orderBy('id','asc')->paginate(2);
 
-        $ays = AcademicYear::orderBy('id', 'desc')->get();
-        $uay = Cookie::get('uay');
+         return view('admin.academic-year',$data);
+    }
 
-        if ($request->year) {
 
-        $this->validate($request,[
-            'year' => 'required|exists:academic_years,year',
+
+    public function postAcademicYear( Request $request)
+    {
+      $this->validate($request,[
+            'year' => 'required|numeric|max:2999|min:2019',
+            'opening_date' => 'required|date',
+            'closing_date' => 'required|date',
+            'final_date' => 'required|date',
         ]);
 
-        $nray = AcademicYear::where('year',$request->year)->first();
 
-        $uay = $nray->id;
+        $cartd = Carbon::today();
 
-        Cookie::queue('uay', $uay, 300);    
+        $differ = $cartd->diffInDays($request->opening_date, false);
+
+        if ($differ < 0) {
+        session()->flash('message', 'Start time can not be older than today!');
+        Session::flash('type', 'error');
+        return redirect()->back();
         }
 
-        if ($uay) {
-            $cay = AcademicYear::findOrFail($uay);
-        }else{
-            $cay = AcademicYear::whereYear('opening_date', '=', date('Y'))->first();
-        }
-        $data['cay'] = $cay;
-        $uid = Auth::user()->id;
-        $data['cons'] = Contribution::whereAcademicYear($cay->id)->whereUserId($uid)->orderBy('id', 'asc')->paginate(10);
-        $data['ays'] = AcademicYear::orderBy('id', 'desc')->get();
+        $od=Carbon::parse($request->opening_date);
+        $cdiff = $od->diffInDays($request->closing_date, false);
 
-        return view('contribution', $data);
+        if ($cdiff < 1) {
+        session()->flash('message', 'The closing date can not be older than opening date!');
+        Session::flash('type', 'error');
+        return redirect()->back();
+        }
+
+        $cd=Carbon::parse($request->closing_date);
+        $fdiff = $cd->diffInDays($request->final_date, false);
+
+        if ($fdiff < 1) {
+        session()->flash('message', 'The final date can not be older than closing date!');
+        Session::flash('type', 'error');
+        return redirect()->back();
+        }
+
+        // dd($differ."<br>".$cdiff."<br>".$fdiff);
+
+        $add['year'] = $request->year;
+        $add['opening_date'] = $request->opening_date;
+        $add['closing_date'] = $request->closing_date;
+        $add['final_date'] = $request->final_date;
+
+        AcademicYear::create($add);
+
+
+
+
+
+        session()->flash('message', 'Academic Year Successfully Added!');
+        Session::flash('type', 'success');
+        return redirect()->back();
     }
 
-
-
-
-
-
-  public function getSingleContribution($id)
+      public function editAcademicYear($id)
     {
-        $data['title'] = "Contribution";
+         $data['title'] = "Update Academic Year";
+         $data['uroute'] = "update-academic-year";
+         $data['ay']= AcademicYear::findOrFail($id);
 
-        // $data['uroute'] = "update-contribution";
-        $data['route'] = "add-stdcomment";
-        $data['eroute'] = "edit-stdcontribution";
-
-        $uid = Auth::user()->id;
-
-        // $data['isDep'] = 2;
-        // $data['eroute'] = "edit-academic-year";
-        $data['con'] = Contribution::findOrFail($id);
-        $con = Contribution::findOrFail($id);
+         return view('admin.edit-academic-year',$data);
+    }
 
 
-        // if ($uid != $con->user_id) {
+     public function updateAcademicYear($id, Request $request)
+    {
 
-        // session()->flash('message', "You don't have the required permission to view the requested page!");
-        // Session::flash('type', 'danger');
-        // return redirect()->back();        
-        // }
+        $this->validate($request,[
+            'year' => 'required|numeric|max:2999|min:2019',
+            'opening_date' => 'required|date',
+            'closing_date' => 'required|date',
+            'final_date' => 'required|date',
+        ]);
 
-        // $data['comments'] = Comment::whereConId($id)->orderBy('id', 'asc')->paginate(10);
-        // $data['comcount'] = Comment::whereConId($id)->count();
-
-       // $con = Contribution::findOrFail($id);
-
-        // $acyear = AcademicYear::findOrFail($con->academic_year);
+          $acayear= AcademicYear::findOrFail($id);
 
 
+           $cartd = Carbon::today();
 
-        $con = Contribution::findOrFail($id);
+                  if ($acayear->opening_date !=$request->opening_date) {
+            $differ = $cartd->diffInDays($request->opening_date, false);
 
-        // $uid = Auth::user()->id; 
+            if ($differ < 0) {
+            session()->flash('message', 'Starting date can not be changed to older dates!');
+            Session::flash('type', 'error');
+            return redirect()->back();
+            }
 
-        // if ($uid != $con->user_id) {
-        //     session()->flash('message', 'You do not have permission to view this page!');
-        //     Session::flash('type', 'error');
-        //     return redirect()->route('stdcontributions');
-        // }
+            $od=Carbon::parse($request->opening_date);
+            $cdiff = $od->diffInDays($request->closing_date, false);
+
+            if ($cdiff < 1 && $acayear->closing_date ==$request->closing_date) {
+            session()->flash('message', 'Opening date can not be later than the closing date!');
+            Session::flash('type', 'error');
+            return redirect()->back();
+            }
+            }
+
+
+            if ($acayear->closing_date !=$request->closing_date) {
+            $od=Carbon::parse($request->opening_date);
+            $cdiff = $od->diffInDays($request->closing_date, false);
+
+            if ($cdiff < 1) {
+            session()->flash('message', 'Closing date can not be changed to older dates!');
+            Session::flash('type', 'error');
+            return redirect()->back();
+            }
+
+            $cd=Carbon::parse($request->closing_date);
+            $fdiff = $cd->diffInDays($acayear->final_date, false);
+
+            if ($fdiff < 1 && $acayear->final_date == $request->final_date) {
+            session()->flash('message', 'The Closing date can not be changed to later than the final date!');
+            Session::flash('type', 'error');
+            return redirect()->back();
+            }
+            }
+
+            if ($acayear->final_date !=$request->final_date) {
+            $cd=Carbon::parse($request->closing_date);
+            $fdiff = $cd->diffInDays($request->final_date, false);
+
+            if ($fdiff < 1) {
+            session()->flash('message', 'The final date can not be changed to older dates!');
+            Session::flash('type', 'error');
+            return redirect()->back();
+            }
+            }
+
+
+        $acayear['year'] = $request->year;
+        $acayear['opening_date'] = $request->opening_date;
+        $acayear['closing_date'] = $request->closing_date;
+        $acayear['final_date'] = $request->final_date;
+
+        $acayear->save();
+
+
+        session()->flash('message', 'Academic Year Successfully updated!');
+        Session::flash('type', 'success');
+        return redirect()->back();
+    }
 
 
 
 
 
-        return view('admin.single-contribution', $data);
+    public function getDepartment()
+    {
+         $data['title'] = "Departments";
+         $data['eroute'] = "edit-department";
+         $data['dps']= Department::orderBy('id','asc')->paginate(2);
+
+         return view('admin.department',$data);
+    }
+
+
+
+    public function postDepartment( Request $request)
+    {
+      $this->validate($request,[
+            'name' => 'required',
+        ]);
+
+
+        $adp['name'] = $request->name;
+
+        Department::create($adp);
+
+
+
+
+
+        session()->flash('message', 'Department Successfully Added!');
+        Session::flash('type', 'success');
+        return redirect()->back();
+    }
+
+      public function editDepartment($id)
+    {
+         $data['title'] = "Update Department";
+         $data['uroute'] = "update-department";
+         $data['dp']= Department::findOrFail($id);
+
+         return view('admin.edit-department',$data);
+    }
+
+
+     public function updateDepartment($id, Request $request)
+    {
+
+        $this->validate($request,[
+           'name' => 'required|string',
+        ]);
+
+          $dp= Department::findOrFail($id);
+
+          $dp['name']= $request->name;
+
+
+           
+
+        $dp->save();
+
+
+        session()->flash('message', 'Academic Year Successfully updated!');
+        Session::flash('type', 'success');
+        return redirect()->back();
     }
 
 
@@ -152,4 +273,92 @@ class StudentController extends Controller
 
 
 
+
+
+
+
+     public function getContribution()
+    {
+         $data['title'] = "Contribution";
+         $data['eroute'] = "edit-contribution";
+         $data['cns']= Contribution::orderBy('id','asc')->paginate(2);
+         $data['acys']= AcademicYear::orderBy('id','asc')->get();
+
+         return view('admin.contribution',$data);
+    }
+
+
+
+    public function postContribution( Request $request)
+    {
+      $this->validate($request,[
+            'title' => 'required',
+            'year' => 'required|exists:academic_years,year',
+            'doc' => 'required|file|mimes:doc,docx,pdf|max:5120',
+            'file' => 'required',
+            'file.*' => 'image|mimes:jpeg,png,svg,jpg,gif|max:2048',
+        ]);
+
+
+        $cn['title'] = $request->title;
+        $cn['year'] = $request->year;
+        $cn['file_name'] = $request->doc->getClientOriginalName();
+        $request->doc->store('public/upload');
+        // $cn['std_id'] = $request->title;
+
+        $files = $request->file('file');
+
+        $cn = Contribution::create($cn);
+        $lcn = $cn->id;
+
+        foreach ($files as $file) {
+             $img['con_id'] = $lcn;
+             $img['name'] = $file->getClientOriginalName();
+             $file->store('public/upload');
+               ConPhoto::create($img);
+         } 
+
+      
+
+
+
+
+
+        session()->flash('message', 'Contribution Successfully Added!');
+        Session::flash('type', 'success');
+        return redirect()->back();
+    }
+
+      public function editContribution($id)
+    {
+         $data['title'] = "Update Contribution";
+         $data['uroute'] = "update-contribution";
+         $data['cn']= Contribution::findOrFail($id);
+           $data['acys']= AcademicYear::orderBy('id','asc')->get();
+
+         return view('admin.edit-contribution',$data);
+    }
+
+
+     public function updateContribution($id, Request $request)
+    {
+
+        // $this->validate($request,[
+        //    'name' => 'required|string',
+        // ]);
+
+        //   $dp= Department::findOrFail($id);
+
+        //   $dp['name']= $request->name;
+
+
+           
+
+        // $dp->save();
+
+
+        // session()->flash('message', 'Academic Year Successfully updated!');
+        // Session::flash('type', 'success');
+        // return redirect()->back();
+    }
 }

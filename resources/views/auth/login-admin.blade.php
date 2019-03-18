@@ -31,7 +31,7 @@
                         @endforeach
                      @endif
                     <!--  ==================================SESSION MESSAGES==================================  -->
-                    <form method="POST" action="{{ route('post-login-admin') }}">
+                    <form method="POST" action="{{ route($login) }}">
                         @csrf
 
                         <div class="form-group row">
