@@ -30,7 +30,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('backend.admin-dashboard');
+        $data['title'] = "Academic Year";
+        return view('backend.admin-dashboard',$data);
     }
 
     public function getAcademicYear()

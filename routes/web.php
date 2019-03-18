@@ -63,3 +63,21 @@ Route::post('update-contribution/{id}', 'AdminController@updateContribution')->n
 // Route::post('edit-academic-year/{id}', 'AdminController@updateAcademicYear')->name('update-academic-year');
 
 });
+
+
+
+Route::group(['prefix' => 'student'], function() {
+
+
+Route::match(['get', 'post'], 'contributions', 'StudentController@getContribution')->name('studentcontributions');
+// Route::get('contributions/{year}', 'StudentController@getContributionsByYear')->name('stdcontributions-year');
+// Route::post('add-contribution', 'StudentController@postContribution')->name('post-stdcontribution');
+// Route::get('edit-contribution/{id}', 'StudentController@editContribution')->name('edit-stdcontribution');
+// Route::post('edit-contribution/{id}', 'StudentController@updateContribution')->name('update-stdcontribution');
+
+
+Route::get('contribution/{id}', 'StudentController@getSingleContribution')->name('single-stdcontribution');
+
+// Route::post('contribution/{id}', 'StudentController@addComment')->name('add-stdcomment');
+
+});

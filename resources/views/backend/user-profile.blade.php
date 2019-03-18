@@ -12,16 +12,16 @@
             <div class="content-page">
                 <div class="content">
                     <div class="container-fluid">
-
+{{-- 
                         <!-- Page title box -->
                         <div class="page-title-box">
                             <ol class="breadcrumb float-right">
                                 <li class="breadcrumb-item"><a href="javascript:void(0);">Greeva</a></li>
                                 <li class="breadcrumb-item active">Dashboard</li>
                             </ol>
-                            <h4 class="page-title">Dashboard</h4>
+                            <h4 class="page-title">{{$title}}</h4>
                         </div>
-                        <!-- End page title box -->
+                        <!-- End page title box --> --}}
 
 
                

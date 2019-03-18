@@ -30,12 +30,15 @@ class DashboardController extends Controller
      */
     public function adminHome()
     {
+
         return view('backend.admin-dashboard');
     }
 
 
      public function userProfile()
     {
+
+        $data['title'] ="User Profile";
         $uid = Auth::user()->id;
         $data['user'] =User::findOrFail($uid);
      

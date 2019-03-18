@@ -139,7 +139,7 @@
                             </td> --}}
                             {{-- <td><span class="badge bg-danger">55 days</span></td> --}}
 
-                            <td><a href="{{route($eroute, $cn->id)}}" class="btn btn-primary w-md"><i class="mdi mdi-square-edit-outline"></i> <span> Edit</span></a></td>
+                            <td><a href="{{route($eroute, $cn->id)}}" class="btn btn-primary w-md"><i class="mdi mdi-square-edit-outline"></i> <span> Edit</span></a>  <a href="{{ route('single-stdcontribution', $cn->id) }}" class="btn btn-warning btn-sm">Interact</a></td>
                           </tr>
 
                         @endforeach
