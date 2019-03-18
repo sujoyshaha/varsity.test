@@ -23,7 +23,7 @@ class AdminAuthController extends Controller
         ) {
 
             // Authentication passed...
-            return redirect('/dashboard');
+            return redirect('/admin/academic-years');
         }
 
         $request->session()->flash('message', 'Login incorrect!');
