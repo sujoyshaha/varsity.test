@@ -26,7 +26,33 @@
 
     <div class="row">
 
-      
+      					<div class="col-xl-4">
+        
+                                <div class="card-box">
+                                    
+                                    <h4 class="header-title">Contribution Details</h4>
+                                    
+                                    
+                                    
+                                </div><!-- end card-box-->
+        
+                                 <!-- end card-box-->
+        
+                            </div>      					
+
+                            <div class="col-xl-8">
+        
+                                <div class="card-box">
+                                    
+                                    <h4 class="header-title">Contribution Files</h4>
+                                    
+                                    
+                                    
+                                </div><!-- end card-box-->
+        
+                                 <!-- end card-box-->
+        
+                            </div>
       
      
                                 <div class="card-box">
@@ -35,7 +61,7 @@
 
 "></i> <span>Add</span> </button>
 
-<span class="username"><a href="#">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} #{{ Auth::user()->id }}</a></span>
+{{-- <span class="username"><a href="#">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} #{{ Auth::user()->id }}</a></span> --}}
 
 
 

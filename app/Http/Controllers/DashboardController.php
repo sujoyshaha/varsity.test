@@ -40,7 +40,11 @@ class DashboardController extends Controller
     {
 
         $data['title'] ="User Profile";
-        $uid = Auth::user()->id;
+        //$uid = Auth::user()->id;
+
+        $uid = Auth::guard()->user()->id;
+
+
         $data['user'] =User::findOrFail($uid);
      
         return view('backend.user-profile',$data);
@@ -103,7 +107,10 @@ class DashboardController extends Controller
         ]);
 
 
-        $user_id = Auth::user()->id;
+        // $user_id = Auth::user()->id;
+        $user_id = Auth::guard()->user()->id;
+
+
        
         $myprofile = User::findOrFail($user_id);
 

@@ -11,7 +11,7 @@
                             <li class="menu-title">Navigation</li>
 
                             <li>
-                                <a href="index.html">
+                                <a href="#">
                                     <i class="mdi mdi-view-dashboard"></i> <span> Dashboard </span>
                                 </a>
                             </li>
@@ -26,11 +26,42 @@
                                     <i class="mdi mdi-calendar-check"></i> <span> Departments </span>
                                 </a>
                             </li>
+
+                            @if(Auth::guard('admin')->check())
                              <li>
                                 <a href="{{route('contributions')}}">
                                     <i class="mdi mdi-calendar-check"></i> <span> Contributions </span>
                                 </a>
                             </li>
+                           <li>
+                                <a href="javascript: void(0);"><i class="mdi mdi-email-outline"></i><span> Email </span> <span class="menu-arrow"></span></a>
+                                <ul class="nav-second-level" aria-expanded="false">
+                                    <li><a href="email-inbox.html">Add Student</a></li>
+                                     
+                                </ul>
+                            </li>
+
+
+                            @elseif(Auth::guard('student')->check())
+                             <li>
+                                <a href="{{route('studentcontributions')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span> Contributions </span>
+                                </a>
+                            </li>
+                            @elseif(Auth::guard('faculty')->check())
+                             <li>
+                                <a href="{{route('facultycontributions')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span> Contributions </span>
+                                </a>
+                            </li>
+
+                            @elseif(Auth::guard('coordinator')->check())
+                             <li>
+                                <a href="{{route('coordinatorcontributions')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span> Contributions </span>
+                                </a>
+                            </li>
+                            @endif
 
 
                             {{-- <li>

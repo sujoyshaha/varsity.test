@@ -30,7 +30,7 @@
       
      
                                 <div class="card-box">
-                                    <h2 class="m-t-0 header-title d-inline">Basic example</h2>
+                                    <h2 class="m-t-0 header-title d-inline">Add  student</h2>
                                    <button type="button" class="btn btn-lg btn-info float-right"  data-toggle="modal" data-target="#myModal"> <i class="  mdi mdi-plus-circle
 
 "></i> <span>Add</span> </button>
@@ -175,7 +175,7 @@
                                                 </div>
                                                 <div class="modal-body" >
                                                   
-                                                <form role="form" method="post" action="{{route('post-studentcontribution')}}" enctype="multipart/form-data">
+                                                <form role="form" method="post" action="{{route('post-contribution')}}" enctype="multipart/form-data">
 
                                                   @csrf
 
@@ -188,12 +188,6 @@
                                         <option value="{{$acy->year}}">{{$acy->year}}</option>
 
                                            @endforeach
-
-
-                                    {{--          @foreach($acys as $acy)
-                    <option value="{{ $acy->id }}" {{ $acy->id == $ay->year ? 'selected="selected"' : '' }}>{{ $acy->year }}</option>
-
-                    @endforeach --}}
                                        
                                     </select>
 

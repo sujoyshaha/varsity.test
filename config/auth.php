@@ -56,6 +56,16 @@ return [
             'provider' => 'faculty',
         ],
 
+        'manager' => [
+            'driver' => 'session',
+            'provider' => 'manager',
+        ],
+
+        'coordinator' => [
+            'driver' => 'session',
+            'provider' => 'coordinator',
+        ],
+
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
@@ -98,6 +108,16 @@ return [
         'faculty' => [
             'driver' => 'eloquent',
             'model' => App\Faculty::class,
+        ],
+
+        'manager' => [
+            'driver' => 'eloquent',
+            'model' => App\Manager::class,
+        ],
+
+        'coordinator' => [
+            'driver' => 'eloquent',
+            'model' => App\Coordinator::class,
         ],
 
         // 'users' => [

@@ -35,7 +35,7 @@
         
       
 
-       <form role="form" method="post" action="{{route($uroute, $cn->id)}}" enctype="multipart/form-data">
+       <form role="form" method="post" action="{{route('update-stdcontribution', $cn->id)}}" enctype="multipart/form-data">
 
                                                   @csrf
 

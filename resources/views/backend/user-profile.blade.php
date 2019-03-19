@@ -50,7 +50,7 @@
         @endif
 
          class="avatar img-circle img-thumbnail" alt="avatar">
-        <h6 style="text-transform: uppercase;">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h6>
+        {{-- <h6 style="text-transform: uppercase;">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h6> --}}
         
       </div></hr><br>
 

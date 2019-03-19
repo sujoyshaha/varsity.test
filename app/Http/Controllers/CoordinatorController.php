@@ -4,17 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use App\Admin;
 use App\AcademicYear;
 use App\Department;
 use App\Contribution;
 use App\ConPhoto;
-use Illuminate\Support\Facades\Cookie;
-use Auth;
+use Cookie;
+// use App\Auth;
 
 
-class AdminController extends Controller
+
+class CoordinatorController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -23,7 +24,8 @@ class AdminController extends Controller
      */
     public function __construct()
     {
-         $this->middleware('auth:admin');
+         // $this->middleware('auth');
+        $this->middleware('auth:coordinator');
     }
 
     /**
@@ -33,200 +35,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-
-        return view('backend.admin-dashboard',['title' => 'Academic Year']);
-    }
-
-
-    public function userProfile()
-    {
-
-        $data['title'] ="User Profile";
-        //$uid = Auth::user()->id;
-
-        $uid = Auth::guard('admin')->user()->id;
-
-
-        $data['user'] =Admin::findOrFail($uid);
-     
-        return view('backend.user-profile',$data);
-    }
-      
-
-    
-    public function postPass(Request $request)
-    {
-
-        $this->validate($request,[
-
-'password' => ['required', 'string', 'min:6', 'confirmed'],
-
-]);     
-        $uid = Auth::guard('admin')->user()->id;
-        $user = Admin::findOrFail($uid);
-
- if ($user) {
-
-
-    if (Hash::check(Input::get('passwordold'),$user['password']) && Input::get('password')==Input::get('password_confirmation')) {
-            $user->password=bcrypt(Input::get('password'));
-            $user->save();
-
-            session()->flash('message', 'Password change Successfully!');
-            Session::flash('type', 'success');
-            return redirect()->back();
-
-        }
-        else{
-
-
-        session()->flash('message', 'Password not changed!');
-        Session::flash('type', 'error');
-        return redirect()->back();
-    }
-           
-        }
-
-
-
-        
-    }
-      
-
-
-       public function updateuserProfile(Request $request)
-    {
-
-
-
-        $this->validate($request,[
-
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string',
-            'photo' => 'max:2048',
-            
-        ]);
-
-
-        // $user_id = Auth::user()->id;
-        $user_id = Auth::guard('admin')->user()->id;
-
-
-       
-        $myprofile = Admin::findOrFail($user_id);
-
-
-        //for update email | existing email | 
-
-        $exemail = $myprofile->email;
-        $nemail = $request->email;
-
-        $hasEmail = Admin::whereEmail($nemail)->first();
-
-        if ($hasEmail) {
-            if ($hasEmail->email == $exemail) {
-                # code...
-            }else{
-                session()->flash('message', 'Email already exist with another user!');
-                Session::flash('type', 'error');
-                return redirect()->back();
-            }
-        }else{
-            $myprofile['email'] = $request->email;
-        }
-
-
-
-        if ($request->photo) {
-
-$photoname = pathinfo($request->photo->getClientOriginalName(), PATHINFO_FILENAME);
-
-$photoname = preg_replace('!\s+!', ' ', $photoname);
-$photoname = str_replace(' ', '-', $photoname);
-$photoname = strtolower($photoname);
-
-$photo = $photoname . '.' . $request->photo->getClientOriginalExtension();
-
-$count = 0;
-$photocount = 1;
-
-while ($count < 1) {
-$hasPhoto = User::wherePhoto($photo)->first();
-if ($hasPhoto) {
-$newphotoname = $photoname . '_' . $photocount;
-$photo = $newphotoname . '.' . $request->photo->getClientOriginalExtension();
-$photocount++;
-} else {
-$count++;
-}
-}
-
-$cyr = date("Y");
-$cmo = date("m");
-
-$request->photo->move(public_path('upload/' . $cyr . '/' . $cmo), $photo);
-
-$photo = $cyr . '/' . $cmo . '/' . $photo;
-
-$myprofile['photo'] = $photo;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        $email=$request->email;
-
-        // if ($request->email) {
-        //     $email= User::whereEmail($request->email)->first();
-        // }
-
-
-        // $em = User::whereEmail($email)->first();
-
-        // if ($em) {
-        //     session()->flash('message', 'email are taken!');
-        // Session::flash('type', 'success');
-        // return redirect()->back();
-
-        // }else{
-        //      $myprofile['email'] = $request->email;
-        // }
-
-        $myprofile['first_name'] = $request->first_name;
-        $myprofile['last_name'] = $request->last_name;
-       
-       
-        $myprofile['phone'] = $request->phone;
-        $myprofile['email'] = $request->email;
-        //$myprofile['photo'] = $request->photo;
-        
-            
-        $myprofile->save();
-
-        session()->flash('message', 'Your Profile Successfully updated!');
-        Session::flash('type', 'success');
-        return redirect()->back();
-
+        $data['title'] = "Academic Year";
+        return view('backend.admin-dashboard',$data);
     }
 
     public function getAcademicYear()
@@ -298,9 +108,11 @@ $myprofile['photo'] = $photo;
 
       public function editAcademicYear($id)
     {
-         $ay= AcademicYear::findOrFail($id);
+         $data['title'] = "Update Academic Year";
+         $data['uroute'] = "update-academic-year";
+         $data['ay']= AcademicYear::findOrFail($id);
 
-         return view('admin.edit-academic-year',['title' => 'Update Academic Year', 'ay' => $ay, 'uroute' => 'update-academic-year']);
+         return view('admin.edit-academic-year',$data);
     }
 
 
@@ -465,45 +277,15 @@ $myprofile['photo'] = $photo;
 
 
 
-    //  public function getContribution()
-    // {
-    //      $data['title'] = "Contribution";
-    //      $data['eroute'] = "edit-contribution";
-    //      $data['cns']= Contribution::orderBy('id','asc')->paginate(2);
-    //      $data['acys']= AcademicYear::orderBy('id','asc')->get();
-
-    //      return view('admin.contribution',$data);
-    // }
-
-
-
-
-    public function getContribution(Request $request)
+     public function getContribution()
     {
-        $data['title'] = "Contribution";
-        $data['route'] = "post-contribution";
-        $data['eroute'] = "edit-contribution";
-        $data['sroute'] = "single-contribution";
-        $data['aroute'] = "approve-contribution";
-      
-        
-        // $uay = Cookie::get('uay');
-       
+         $data['title'] = "Contribution";
+         $data['eroute'] = "edit-contribution";
+         $data['cns']= Contribution::orderBy('id','asc')->paginate(2);
+         $data['acys']= AcademicYear::orderBy('id','asc')->get();
 
-        $data['acys'] = AcademicYear::orderBy('id', 'desc')->get();
-
-        
-        $cay = AcademicYear::whereYear('opening_date', '=', date('Y'))->first();
-        $data['cay'] = $cay;
-        $data['cns'] = Contribution::where('year',$cay->year)->orderBy('id', 'asc')->paginate(10);
-
-        return view('admin.admin-contribution', $data);
+         return view('admin.contribution',$data);
     }
-
-
-
-
-
 
 
 
@@ -547,43 +329,36 @@ $myprofile['photo'] = $photo;
         return redirect()->back();
     }
 
-
-
-      public function getSingleContribution($id)
+      public function editContribution($id)
     {
-        $data['title'] = "Contribution";
+         $data['title'] = "Update Contribution";
+         $data['uroute'] = "update-contribution";
+         $data['cn']= Contribution::findOrFail($id);
+           $data['acys']= AcademicYear::orderBy('id','asc')->get();
 
-        // $data['uroute'] = "update-contribution";
-        $data['route'] = "add-comment";
-
-        // $data['isDep'] = 2;
-        // $data['eroute'] = "edit-academic-year";
-        $data['con'] = Contribution::findOrFail($id);
-
-       // $data['comments'] = Comment::whereConId($id)->orderBy('id', 'asc')->paginate(10);
-       // $data['comcount'] = Comment::whereConId($id)->count();
-
-       // $con = Contribution::findOrFail($id);
-
-        // $acyear = AcademicYear::findOrFail($con->academic_year);
-
-
-
-        $con = Contribution::findOrFail($id);
-
-        // $uid = Auth::user()->id; 
-
-        // if ($uid != $con->user_id) {
-        //     session()->flash('message', 'You do not have permission to view this page!');
-        //     Session::flash('type', 'error');
-        //     return redirect()->route('stdcontributions');
-        // }
-
-
-
-
-
-        return view('admin.single-contribution', $data);
+         return view('admin.edit-contribution',$data);
     }
 
+
+     public function updateContribution($id, Request $request)
+    {
+
+        // $this->validate($request,[
+        //    'name' => 'required|string',
+        // ]);
+
+        //   $dp= Department::findOrFail($id);
+
+        //   $dp['name']= $request->name;
+
+
+           
+
+        // $dp->save();
+
+
+        // session()->flash('message', 'Academic Year Successfully updated!');
+        // Session::flash('type', 'success');
+        // return redirect()->back();
+    }
 }

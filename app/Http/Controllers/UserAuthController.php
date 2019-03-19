@@ -27,8 +27,25 @@ class UserAuthController extends Controller
             return redirect('/student/contributions');
         }
 
+        if (Auth::guard('coordinator')->attempt([
+            'email' => $request->username,
+            'password' => $request->password,
+        ])
+        ) {
 
+            // Authentication passed...
+            return redirect('/coordinator/contributions');
+        }
 
+        if (Auth::guard('manager')->attempt([
+            'email' => $request->username,
+            'password' => $request->password,
+        ])
+        ) {
+
+            // Authentication passed...
+            return redirect('/manager/contributions');
+        }
 
         if (Auth::guard('faculty')->attempt([
             'email' => $request->username,
@@ -41,7 +58,7 @@ class UserAuthController extends Controller
         }
 
         if (Auth::guard('admin')->attempt([
-            'username' => $request->username,
+            'email' => $request->username,
             'password' => $request->password,
         ])
         ) {
