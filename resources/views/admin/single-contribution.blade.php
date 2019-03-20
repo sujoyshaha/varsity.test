@@ -30,9 +30,29 @@
         
                                 <div class="card-box">
                                     
-                                    <h4 class="header-title">Contribution Details</h4>
+                                   
                                     
-                                    
+                                         <div class="text-center">
+                                         
+
+                                         <img src="https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100&ssl=1"  class="avatar img-circle img-thumbnail" alt="avatar">
+                                        
+
+                                        <h4 class="username"><a href="#">{{ $con->student->first_name }} {{ $con->student->first_name }}</a></h4>
+                                 </div>
+
+
+                                 <br>
+
+
+                                <h5>Article Name:  {{ $con->title }}</h5>                              
+                      
+                               {{--  <h5>Department:  {{ $con->user->dep->name }}</h5> --}}
+                                <h5>Submitted At:  {{ $con->created_at }}</h5>
+                                {{-- <h5>Academic Year:  {{ $con->acyear->year }}</h5> --}}
+                                <h5>Contribution ID:  {{ $con->id }}</h5>
+                                <h5>Last Modified At:  {{ $con->updated_at }}</h5>
+                
                                     
                                 </div><!-- end card-box-->
         

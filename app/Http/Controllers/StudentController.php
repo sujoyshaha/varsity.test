@@ -287,6 +287,15 @@ class StudentController extends Controller
 
          return view('admin.contribution',$data);
     }
+    public function addContribution()
+    {
+         $data['title'] = "Contribution";
+         // $data['eroute'] = "edit-studentcontribution";
+         // $data['cns']= Contribution::orderBy('id','asc')->paginate(2);
+         $data['acys']= AcademicYear::orderBy('id','asc')->get();
+
+         return view('admin.add-contribution',$data);
+    }
 
 
 
@@ -644,7 +653,7 @@ class StudentController extends Controller
         $data['route'] = "add-stdcomment";
         $data['eroute'] = "edit-stdcontribution";
 
-        $uid = Auth::user()->id;
+        // $uid = Auth::user()->id;
 
         // $data['isDep'] = 2;
         // $data['eroute'] = "edit-academic-year";
@@ -652,15 +661,15 @@ class StudentController extends Controller
         $con = Contribution::findOrFail($id);
 
 
-        if ($uid != $con->user_id) {
+        // if ($uid != $con->user_id) {
 
-        session()->flash('message', "You don't have the required permission to view the requested page!");
-        Session::flash('type', 'danger');
-        return redirect()->back();        
-        }
+        // session()->flash('message', "You don't have the required permission to view the requested page!");
+        // Session::flash('type', 'danger');
+        // return redirect()->back();        
+        // }
 
-        $data['comments'] = Comment::whereConId($id)->orderBy('id', 'asc')->paginate(10);
-        $data['comcount'] = Comment::whereConId($id)->count();
+                //  $data['comments'] = Comment::whereConId($id)->orderBy('id', 'asc')->paginate(10);
+                //  $data['comcount'] = Comment::whereConId($id)->count();
 
        // $con = Contribution::findOrFail($id);
 

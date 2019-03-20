@@ -86,6 +86,7 @@
                                 {{-- <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ old('phone') }}" required autofocus> --}}
 
                                     <select class="form-control" id="role" name="role">
+                                        
                                         <option value="1">Administration</option>
                                         <option value="2">Marketing Manager</option>
                                         <option value="3">Marketing Coordinator</option>

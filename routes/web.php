@@ -78,8 +78,13 @@ Route::group(['prefix' => 'student'], function() {
 
 
 Route::match(['get', 'post'], 'contributions', 'StudentController@getContribution')->name('studentcontributions');
+
 Route::get('contributions/{year}', 'StudentController@getContributionsByYear')->name('studentcontributions-year');
+
+Route::get('add-contribution', 'StudentController@addContribution')->name('add-studentcontribution');
 Route::post('add-contribution', 'StudentController@postContribution')->name('post-studentcontribution');
+
+
 Route::get('edit-contribution/{id}', 'StudentController@editContribution')->name('edit-studentcontribution');
 Route::post('edit-contribution/{id}', 'StudentController@updateContribution')->name('update-stdcontribution');
 

@@ -30,10 +30,10 @@
       
      
                                 <div class="card-box">
-                                    <h2 class="m-t-0 header-title d-inline">Basic example</h2>
-                                   <button type="button" class="btn btn-lg btn-info float-right"  data-toggle="modal" data-target="#myModal"> <i class="  mdi mdi-plus-circle
+                                    
+                                   <button type="button" class="btn btn-lg btn-info  "  data-toggle="modal" data-target="#myModal"> <i class="  mdi mdi-plus-circle
 
-"></i> <span>Add</span> </button>
+"></i> <span>Add</span> </button> <br />
 
 
 
@@ -45,18 +45,21 @@
                                     <table class="table">
                                         <thead>
                             <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Title</th>
-                                <th>Academic Year</th>
-                                <th>Date Submitted</th>
-                                <th>Opening Date</th>
-                                <th>Closing Date</th>
-                                <th>Final Date</th>
+                                <th style="width: 10px">ID</th>
+                                <th class="align-middle">Article Name</th>
+                                <th class="align-middle">Opening Date</th>
+                                <th class="align-middle">Closing Date</th>
+                                <th class="align-middle">Submitted</th>        
+                                <th class="align-middle">Academic Year</th>
+                                
+                                
+                                
+                                {{-- <th>Final Date</th> --}}
                                 <th>Status</th>
                                 {{-- <th>Time Left to Update File</th> --}}
                                 
                                 {{-- <th>Progress</th> --}}
-                                {{-- <th style="width: 40px">Timeleft</th> --}}
+                                <th style="width: 40px">Timeleft</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -65,14 +68,14 @@
                         @foreach($cns as $cn)
 
                           <tr>
-                            <td>{{ $cn->id }}</td>
-                            <td>{{ $cn->title }}</td>
-                            <td>{{ $cn->year }}</td>
-                            <td>{{ $cn->created_at }}</td>
-
+                            <td class="align-middle">{{ $cn->id }}</td>
+                            <td class="align-middle">{{ $cn->title }}</td>
                             <td class="align-middle">{{ $cn->ayear->opening_date }}</td>
                             <td class="align-middle">{{ $cn->ayear->closing_date }}</td>
-                            <td class="align-middle">{{ $cn->ayear->final_date }}</td>
+                            {{-- <td class="align-middle">{{ $cn->ayear->final_date }}</td> --}}
+                            <td class="align-middle">{{ $cn->created_at }}</td>
+                            <td class="align-middle">{{ $cn->year }}</td>
+
 
 
 
@@ -127,19 +130,8 @@
                                  {{ $fdiff }} days
                                 </span></td>
 
-                            <td>
 
-                         
-                         
-                            
-                            {{-- <td>
-                              <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                              </div>
-                            </td> --}}
-                            {{-- <td><span class="badge bg-danger">55 days</span></td> --}}
-
-                            <td><a href="{{route($eroute, $cn->id)}}" class="btn btn-primary w-md"><i class="mdi mdi-square-edit-outline"></i> <span> Edit</span></a>  <a href="{{ route('single-stdcontribution', $cn->id) }}" class="btn btn-warning btn-sm">Interact</a></td>
+                            <td><a href="{{ route('single-stdcontribution', $cn->id) }}" class="btn btn-primary ">View</a> <a href="{{route($eroute, $cn->id)}}" class="btn btn-primary "><i class="mdi mdi-square-edit-outline"></i> <span> Edit</span></a>  </td>
                           </tr>
 
                         @endforeach
@@ -166,79 +158,7 @@
 
 
 
-<div id="myModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title" id="myModalLabel">Contributions</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                </div>
-                                                <div class="modal-body" >
-                                                  
-                                                <form role="form" method="post" action="{{route('post-studentcontribution')}}" enctype="multipart/form-data">
 
-                                                  @csrf
-
-                                             <div class="card-body">
-                                                    <div class="form-group">
-                             
-
-                                    <select class="form-control" id="role" name="year">
-                                      @foreach($acys as $acy)
-                                        <option value="{{$acy->year}}">{{$acy->year}}</option>
-
-                                           @endforeach
-
-
-                                    {{--          @foreach($acys as $acy)
-                    <option value="{{ $acy->id }}" {{ $acy->id == $ay->year ? 'selected="selected"' : '' }}>{{ $acy->year }}</option>
-
-                    @endforeach --}}
-                                       
-                                    </select>
-
-                            
-                            </div>
-                            </div>
-
-
-
-                                                  <div class="card-body">
-                                                    <div class="form-group">
-                                                      <label for="exampleInputEmail1">contribution title</label>
-                                                      <input type="text" class="form-control" id="year" name="title" placeholder="2019" value=" {{old('title')}}">
-                                                    </div>
-                                                    <div class="form-group">
-                                                      <label for="exampleInputPassword1">contribution doc file</label>
-                                                      <input type="file" class="form-control" id="opening-date" name="doc" placeholder="DD/MM" value="{{old('doc')}}" >
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                      <label for="exampleInputPassword1">Contribution photo</label>
-                                                      <input type="file" class="form-control" id="closing-date" name="file[]" placeholder="DD/MM" multiple="" value="{{old('files')}}">
-                                                    </div>
-
-
-                                                  
-
-
-                                                    
-                                                    {{-- <a href="{{ route('contributions') }}" class="btn btn-secondary" >Back</a> --}}
-                                                    <a href="{{ route('contributions') }}"class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</a>
-                                          <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add {{$title}}</button>
-                                                    </div>
-                                                 
-                                              
-                                              </div>
-                                              <!-- /.card -->
-                                        </div>
-                                        
-                                         </form>
-                                                    
-                                              
-                                            </div><!-- /.modal-content -->
-                                        </div><!-- /.modal-dialog -->
-                                    </div>
                    
 @endsection
 

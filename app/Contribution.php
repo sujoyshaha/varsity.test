@@ -16,4 +16,12 @@ class Contribution extends Model
     	return $this->belongsTo(AcademicYear::class, 'year', 'year');
     }
 
+    public function student()
+    {
+    	return $this->belongsTo(Student::class, 'std_id');
+    }
+
+
+    
+
 }
