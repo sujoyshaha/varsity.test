@@ -25,12 +25,12 @@
 
                    
 
-    <div class="row">
+    <div class="row justify-content-center">
 
       
       
      
-                               <div class="card-box">
+                               <div class="card-box col-8">
                                 
         
       <form role="form" method="post" action="{{route($uroute, $ay->id)}}">
@@ -59,8 +59,8 @@
                                                     </div>
 
 
-                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</button>
-                                          <button type="submit" href="data-href" class="btn btn-primary data-href"><i class="fas fa-plus"></i> Update {{$title}}</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</button>
+                                          <button type="submit" href="data-href" class="btn btn-success data-href"><i class="fas fa-plus"></i> {{$title}}</button>
                                                     </div>
                                                  
                                               

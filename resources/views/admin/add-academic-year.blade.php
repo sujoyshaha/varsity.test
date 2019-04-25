@@ -25,60 +25,41 @@
 
                    
 
-    <div class="row">
+    <div class="row justify-content-center">
 
       
       
      
-                               <div class="card-box">
+                               <div class="card-box col-8">
                                 
         
-      
-
-       <form role="form" method="post" action="{{route('update-stdcontribution', $cn->id)}}" enctype="multipart/form-data">
+      <form role="form" method="post" action="{{route('post-academic-year')}}">
 
                                                   @csrf
-
-                                             <div class="card-body">
-                                                    <div class="form-group">
-                             
-
-                                    <select class="form-control" id="role" name="year">
-                                      @foreach($acys as $acy)
-                                        <option value="{{$acy->year}}">{{$acy->year}}</option>
-
-                                           @endforeach
-                                       
-                                    </select>
-
-                            
-                            </div>
-                            </div>
-
-
-
                                                   <div class="card-body">
                                                     <div class="form-group">
-                                                      <label for="exampleInputEmail1">contribution title</label>
-                                                      <input type="text" class="form-control" id="year" name="title" placeholder="2019" value="{{$cn->title}}" >
+                                                      <label for="exampleInputEmail1">Academic Year</label>
+                                                      <input type="text" class="form-control" id="year" name="year" placeholder="2019" >
                                                     </div>
                                                     <div class="form-group">
-                                                      <label for="exampleInputPassword1">contribution doc file</label>
-                                                      <input type="file" class="form-control" id="opening-date" name="doc" placeholder="DD/MM" value="{{$cn->file_name}}">
+                                                      <label for="exampleInputPassword1">Opening Date</label>
+                                                      <input type="date" class="form-control" id="opening-date" name="opening_date" placeholder="DD/MM" >
                                                     </div>
 
                                                     <div class="form-group">
-                                                      <label for="exampleInputPassword1">Contribution photo</label>
-                                                      <input type="file" class="form-control" id="closing-date" name="file[]" placeholder="DD/MM" multiple="">
+                                                      <label for="exampleInputPassword1">Closing Date</label>
+                                                      <input type="date" class="form-control" id="closing-date" name="closing_date" placeholder="DD/MM" >
                                                     </div>
 
 
-                                                  
+                                                    <div class="form-group">
+                                                      <label for="exampleInputPassword1">Final Date</label>
+                                                      <input type="date" class="form-control" id="final-date" name="final_date" placeholder="DD/MM" >
+                                                    </div>
 
 
-                                                   {{--  <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</button> --}}
-                                                    <a href="{{ route('contributions') }}"class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</a>
-                                          <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Update {{$title}}</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</button>
+                                          <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i> Add {{$title}}</button>
                                                     </div>
                                                  
                                               
@@ -87,6 +68,7 @@
                                         </div>
                                         
                                          </form>
+                                                    
 
 
                                 </div>

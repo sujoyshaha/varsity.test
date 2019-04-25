@@ -10,4 +10,7 @@ class Department extends Model
         'name',
     ];
 
+    public function article(){
+        return $this->hasMany(Article::class,"dep_id","id");
+    }
 }

@@ -25,12 +25,12 @@
 
                    
 
-    <div class="row">
+    <div class="row justify-content-center">
 
       
       
      
-                               <div class="card-box">
+                               <div class="card-box col-8">
                                 
         
       <form role="form" method="post" action="{{route($uroute, $dp->id)}}">

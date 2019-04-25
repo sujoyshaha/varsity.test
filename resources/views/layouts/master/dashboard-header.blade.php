@@ -5,7 +5,7 @@
             <header id="topnav">
                 <nav class="navbar-custom">
                     <ul class="list-unstyled topbar-right-menu float-right mb-0">
-                        <li class="dropdown notification-list">
+                        {{-- <li class="dropdown notification-list">
                             <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button"
                                 aria-haspopup="false" aria-expanded="false">
                                 <i class="dripicons-bell noti-icon"></i>
@@ -32,7 +32,7 @@
     
                                     <!-- item-->
                                     <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                        <div class="notify-icon"><img src="assets/images/users/avatar-2.jpg" class="img-fluid rounded-circle" alt="" /> </div>
+                                        <div class="notify-icon"><img src="" class="img-fluid rounded-circle" alt="" /> </div>
                                         <p class="notify-details">Cristina Pride</p>
                                         <p class="text-muted font-13 mb-0 user-msg">Hi, How are you? What about our next meeting</p>
                                     </a>
@@ -45,7 +45,7 @@
     
                                     <!-- item-->
                                     <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                        <div class="notify-icon"><img src="assets/images/users/avatar-4.jpg" class="img-fluid rounded-circle" alt="" /> </div>
+                                        <div class="notify-icon"><img src="" class="img-fluid rounded-circle" alt="" /> </div>
                                         <p class="notify-details">Karen Robinson</p>
                                         <p class="text-muted font-13 mb-0 user-msg">Wow that's great</p>
                                     </a>
@@ -63,7 +63,7 @@
                                 </a>
     
                             </div>
-                        </li>
+                        </li> --}}
                         <li class="dropdown notification-list">
                             <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button"
                                 aria-haspopup="false" aria-expanded="false">
@@ -140,10 +140,12 @@
                         <li class="float-left">
                             <a href="index.html" class="logo">
                                 <span class="logo-lg">
-                                    <img src="assets/images/logo.png" alt="" height="20">
+
+
+                                    <img style="width: 134px;height: 49px;" src="{{ asset('assets/images/logo.png') }}" alt="" height="20">
                                 </span>
                                 <span class="logo-sm">
-                                    <img src="assets/images/logo_sm.png" alt="" height="28">
+                                    <img src="{{ asset('assets/images/logo_sm.png') }}" alt="" height="28">
                                 </span>
                             </a>
                         </li>
@@ -156,12 +158,12 @@
                                 </div>
                             </a>
                         </li>
-                        <li class="app-search">
+                      {{--   <li class="app-search">
                             <form>
                                 <input type="text" placeholder="Search..." class="form-control">
                                 <button type="submit" class="sr-only"></button>
                             </form>
-                        </li>
+                        </li> --}}
                     </ul>
                 </nav>
                 <!-- end navbar-custom -->

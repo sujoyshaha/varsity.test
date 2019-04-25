@@ -31,11 +31,7 @@
       
      
                                 <div class="card-box">
-                                    <h2 class="m-t-0 header-title d-inline">Basic example</h2>
-                                   <button type="button" class="btn btn-lg btn-info float-right"  data-toggle="modal" data-target="#myModal"> <i class="  mdi mdi-plus-circle
-
-"></i> <span>Add</span> </button>
-
+                                  
 
 
 
@@ -43,10 +39,10 @@
 
 
         
-                                    <table class="table">
+                                   <table id="selection-datatable" class="table table-bordered dt-responsive nowrap">
                                         <thead>
                             <tr>
-                                <th style="width: 10px">#</th>
+                                <th style="width: 10px">ID</th>
                                 <th>Department Name</th>
                                 <th>Create Date</th>
                                 
@@ -81,7 +77,7 @@
 
 
                                     </table>
-                                    {{$dps}}
+                                    {{-- {{$dps}} --}}
                                 </div> <!-- end card-box -->
          
      
@@ -99,7 +95,7 @@
 
 
 
-<div id="myModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+{{-- <div id="myModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -133,7 +129,7 @@
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
                                     </div>
-                   
+                    --}}
 @endsection
 
 

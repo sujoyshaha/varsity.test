@@ -14,6 +14,20 @@ class UserAuthController extends Controller
         $data['login'] = 'post-student-login';
         return view('auth.login-admin', $data);
     }
+    public function studentLogin(Request $request){
+        if (Auth::guard('student')->attempt([
+            'email' => $request->username,
+            'password' => $request->password,
+        ])
+        ) {
+
+            // Authentication passed...
+            return redirect('/student/articles');
+        }
+        $request->session()->flash('message', 'Login incorrect!');
+        return redirect()->back();
+
+    }
     public function postLogin(Request $request)
     {
 
@@ -24,7 +38,7 @@ class UserAuthController extends Controller
         ) {
 
             // Authentication passed...
-            return redirect('/student/contributions');
+            return redirect('/student/articles');
         }
 
         if (Auth::guard('coordinator')->attempt([

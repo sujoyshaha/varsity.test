@@ -26,6 +26,33 @@
                         @csrf
 
                         <div class="form-group row">
+                            <label for="Role" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
+
+                            <div class="col-md-6">
+                                {{-- <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ old('phone') }}" required autofocus> --}}
+
+                                    <select class="form-control" id="role" name="role">
+                                        
+                                        <option value="1">Administration</option>
+                                        <option value="2">Marketing Manager</option>
+                                        <option value="3">Marketing Coordinator</option>
+                                        <option value="4">Student</option>
+                                        <option value="5">Faculty(Guest)</option>
+                                    </select>
+
+                                @if ($errors->has('phone'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('phone') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div> 
+
+
+
+
+
+                        <div class="form-group row">
                             <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
 
                             <div class="col-md-6">
@@ -79,28 +106,9 @@
                                 @endif
                             </div>
                         </div>                        
-                        <div class="form-group row">
-                            <label for="Role" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
 
-                            <div class="col-md-6">
-                                {{-- <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ old('phone') }}" required autofocus> --}}
 
-                                    <select class="form-control" id="role" name="role">
-                                        
-                                        <option value="1">Administration</option>
-                                        <option value="2">Marketing Manager</option>
-                                        <option value="3">Marketing Coordinator</option>
-                                        <option value="4">Student</option>
-                                        <option value="5">Faculty(Guest)</option>
-                                    </select>
 
-                                @if ($errors->has('phone'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('phone') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div> 
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 

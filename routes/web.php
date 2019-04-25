@@ -27,40 +27,96 @@ Route::post('student/login', 'UserAuthController@postLogin')->name('post-student
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
 
+
+
+
+//ADMIN STARTS HERE
+
+
 Route::group(['prefix' => 'admin'], function () {
 Route::get('/', 'DashboardController@adminHome')->name('admin-dashboard');
 Route::get('user-profile', 'AdminController@userProfile')->name('user-profile');
 
 // Route::get('change-pass', 'DashboardController@getPass')->name('change-pass');
-Route::post('change-pass', 'DashboardController@postPass')->name('post-pass');
-Route::post('user-edit', 'DashboardController@updateuserProfile')->name('update-user');
+Route::post('change-pass', 'AdminController@postPass')->name('post-pass');
+Route::post('user-edit', 'AdminController@updateuserProfile')->name('update-user-profile');
 
 
 Route::get('academic-years', 'AdminController@getAcademicYear')->name('academic-years');
+Route::get('add-academic-year', 'AdminController@addAcademicYear')->name('add-academic-year');
 Route::post('add-academic-year', 'AdminController@postAcademicYear')->name('post-academic-year');
 Route::get('edit-academic-year/{id}', 'AdminController@editAcademicYear')->name('edit-academic-year');
 Route::post('update-academic-year/{id}', 'AdminController@updateAcademicYear')->name('update-academic-year');
 
 
+// Admin User
+Route::get('allusers', 'AdminController@allUsers')->name('allusers');
+Route::get('add-user', 'AdminController@addUser')->name('add-user');
+Route::post('add-user', 'AdminController@postUser')->name('post-user');
+Route::get('edit-user/{id}', 'AdminController@editUser')->name('edit-user');
+Route::post('update-user/{id}', 'AdminController@updateUser')->name('update-user');
 
 
+
+// Admin Stud
+Route::get('students', 'AdminController@getStudent')->name('students');
+Route::get('add-student', 'AdminController@addStudent')->name('add-student');
+Route::post('post-student', 'AdminController@postStudent')->name('post-student');
+Route::get('edit-student/{id}', 'AdminController@editStudent')->name('edit-student');
+Route::post('update-student/{id}', 'AdminController@updateStudent')->name('update-student');
 
 
 // departments-area
 
 
 Route::get('departments', 'AdminController@getDepartment')->name('departments');
+Route::get('add-department', 'AdminController@addDepartment')->name('add-department');
 Route::post('add-department', 'AdminController@postDepartment')->name('post-department');
 Route::get('edit-department/{id}', 'AdminController@editDepartment')->name('edit-department');
 Route::post('update-department/{id}', 'AdminController@updateDepartment')->name('update-department');
 
 
 
-Route::get('contributions', 'AdminController@getContribution')->name('contributions');
-Route::post('add-contribution', 'AdminController@postContribution')->name('post-contribution');
-Route::get('edit-contribution/{id}', 'AdminController@editContribution')->name('edit-contribution');
-Route::post('update-contribution/{id}', 'AdminController@updateContribution')->name('update-contribution');
-Route::get('contribution/{id}', 'AdminController@getSingleContribution')->name('single-admincontribution');
+Route::get('articles', 'AdminController@getArticle')->name('articles');
+Route::post('add-article', 'AdminController@postArticle')->name('post-article');
+Route::get('edit-article/{id}', 'AdminController@editArticle')->name('edit-article');
+Route::post('update-article/{id}', 'AdminController@updateArticle')->name('update-article');
+Route::get('article/{id}', 'AdminController@getSingleArticle')->name('single-adminarticle');
+
+Route::post('article/{id}', 'AdminController@postComment')->name('post-comment');
+
+
+
+/*
+* Contribution Approval routes
+*/
+
+
+Route::post('approve-articles', 'AdminController@postApproveArticles')->name('approve-articles');
+Route::get('approve-article/{id}', 'AdminController@getApproveArticle')->name('approve-article');
+
+
+
+
+
+
+
+/*
+* Reports routes
+*/
+Route::match(['get', 'post'], 'article-report', 'AdminController@getArticleReport')->name('article-report');
+// Route::match(['get', 'post'], 'con-percentage', 'AdminController@getContributionPercentage')->name('con-percentage');
+// Route::get('contributor-number', 'AdminController@getContributorNumberPage')->name('contributor-number');
+// Route::post('contributor-number', 'AdminController@getContributorNumber')->name('post-contributor-number');
+// Route::match(['get', 'post'], 'contributor-without-comment', 'AdminController@getContributorWithoutComment')->name('contributor-without-comment');
+
+
+
+
+
+
+
+	// Route::get('approve-contribution/{id}', 'AdminController@getApproveContribution')->name('approve-contribution');
 
 
 
@@ -77,21 +133,30 @@ Route::get('contribution/{id}', 'AdminController@getSingleContribution')->name('
 Route::group(['prefix' => 'student'], function() {
 
 
-Route::match(['get', 'post'], 'contributions', 'StudentController@getContribution')->name('studentcontributions');
+	Route::get('student-profile', 'AdminController@userProfile')->name('student-profile');
 
-Route::get('contributions/{year}', 'StudentController@getContributionsByYear')->name('studentcontributions-year');
-
-Route::get('add-contribution', 'StudentController@addContribution')->name('add-studentcontribution');
-Route::post('add-contribution', 'StudentController@postContribution')->name('post-studentcontribution');
-
-
-Route::get('edit-contribution/{id}', 'StudentController@editContribution')->name('edit-studentcontribution');
-Route::post('edit-contribution/{id}', 'StudentController@updateContribution')->name('update-stdcontribution');
+// Route::get('change-pass', 'DashboardController@getPass')->name('change-pass');
+Route::post('stdchange-pass', 'AdminController@postPass')->name('stdpost-pass');
+Route::post('stduser-edit', 'AdminController@updateuserProfile')->name('update-stduser-profile');
 
 
-Route::get('contribution/{id}', 'StudentController@getSingleContribution')->name('single-stdcontribution');
+Route::match(['get', 'post'], 'articles', 'StudentController@getArticle')->name('studentarticles');
 
-// Route::post('contribution/{id}', 'StudentController@addComment')->name('add-stdcomment');
+Route::get('articles/{year}', 'StudentController@getArticlesByYear')->name('studentarticles-year');
+
+Route::get('add-article', 'StudentController@addArticle')->name('add-studentarticle');
+Route::post('add-article', 'StudentController@postArticle')->name('post-studentarticle');
+
+
+Route::get('edit-article/{id}', 'StudentController@editArticle')->name('edit-studentarticle');
+Route::post('edit-article/{id}', 'StudentController@updateArticle')->name('update-stdarticle');
+
+
+Route::get('article/{id}', 'StudentController@getSingleArticle')->name('single-stdarticle');
+
+Route::post('article/{id}', 'StudentController@postComment')->name('post-studentcomment');
+
+// Route::post('article/{id}', 'StudentController@addComment')->name('add-stdcomment');
 
 });
 
@@ -100,10 +165,10 @@ Route::get('contribution/{id}', 'StudentController@getSingleContribution')->name
 Route::group(['prefix' => 'faculty'], function() {
 
 
-Route::match(['get', 'post'], 'contributions', 'FacultyController@getContribution')->name('facultycontributions');
+Route::match(['get', 'post'], 'articles', 'FacultyController@getArticle')->name('facultyarticles');
 
 
-Route::get('contribution/{id}', 'FacultyController@getSingleContribution')->name('single-facultycontribution');
+Route::get('article/{id}', 'FacultyController@getSingleArticle')->name('single-facultyarticle');
 
 });
 
@@ -111,10 +176,10 @@ Route::get('contribution/{id}', 'FacultyController@getSingleContribution')->name
 Route::group(['prefix' => 'coordinator'], function() {
 
 
-Route::match(['get', 'post'], 'contributions', 'CoordinatorController@getContribution')->name('coordinatorcontributions');
+Route::match(['get', 'post'], 'articles', 'CoordinatorController@getArticle')->name('coordinatorarticles');
 
 
-Route::get('contribution/{id}', 'CoordinatorController@getSingleContribution')->name('single-coordinatorcontribution');
+Route::get('article/{id}', 'CoordinatorController@getSingleArticle')->name('single-coordinatorarticle');
 
 });
 
@@ -122,9 +187,9 @@ Route::get('contribution/{id}', 'CoordinatorController@getSingleContribution')->
 Route::group(['prefix' => 'manager'], function() {
 
 
-Route::match(['get', 'post'], 'contributions', 'ManagerController@getContribution')->name('managercontributions');
+Route::match(['get', 'post'], 'articles', 'ManagerController@getArticle')->name('managerarticles');
 
 
-Route::get('contribution/{id}', 'ManagerController@getSingleContribution')->name('single-managercontribution');
+Route::get('article/{id}', 'ManagerController@getSingleArticle')->name('single-managerarticle');
 
 });

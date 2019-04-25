@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\AcademicYear;
 use App\Department;
-use App\Contribution;
-use App\ConPhoto;
-use App\ConImg;
-use Cookie;
+use App\Article;
+use App\Comment;
+use App\Student;
+// use App\ConPhoto;
+use App\ArtImg;
+//use Cookie;
 // use App\Auth;
 
 
@@ -278,28 +280,30 @@ class StudentController extends Controller
 
 
 
-     public function getContribution()
+     public function getArticle()
     {
-         $data['title'] = "Contribution";
-         $data['eroute'] = "edit-studentcontribution";
-         $data['cns']= Contribution::orderBy('id','asc')->paginate(2);
+         $data['title'] = "Article";
+         $data['eroute'] = "edit-studentarticle";
+         $data['cns']= Article::orderBy('id','asc')->get();
+         // $data['cns']= Article::orderBy('id','asc')->paginate(10);
          $data['acys']= AcademicYear::orderBy('id','asc')->get();
 
-         return view('admin.contribution',$data);
+         return view('admin.article',$data);
     }
-    public function addContribution()
+    public function addArticle()
     {
-         $data['title'] = "Contribution";
-         // $data['eroute'] = "edit-studentcontribution";
-         // $data['cns']= Contribution::orderBy('id','asc')->paginate(2);
+         $data['title'] = "Article";
+         // $data['eroute'] = "edit-studentarticle";
+         // $data['cns']= Article::orderBy('id','asc')->paginate(2);
          $data['acys']= AcademicYear::orderBy('id','asc')->get();
+         $data['dep'] = Department::orderBy('name','DESC')->get();
 
-         return view('admin.add-contribution',$data);
+         return view('admin.add-article',$data);
     }
 
 
 
-    // public function postContribution( Request $request)
+    // public function postArticle( Request $request)
     // {
     //   $this->validate($request,[
     //         'title' => 'required',
@@ -318,7 +322,7 @@ class StudentController extends Controller
 
     //     $files = $request->file('file');
 
-    //     $cn = Contribution::create($cn);
+    //     $cn = Article::create($cn);
     //     $lcn = $cn->id;
 
     //     foreach ($files as $file) {
@@ -334,41 +338,41 @@ class StudentController extends Controller
 
 
 
-    //     session()->flash('message', 'Contribution Successfully Added!');
+    //     session()->flash('message', 'Article Successfully Added!');
     //     Session::flash('type', 'success');
     //     return redirect()->back();
     // }
 
-    // //   public function editContribution($id)
+    // //   public function editArticle($id)
     // // {
-    // //      $data['title'] = "Update Contribution";
-    // //      $data['uroute'] = "update-contribution";
-    // //      $data['cn']= Contribution::findOrFail($id);
+    // //      $data['title'] = "Update Article";
+    // //      $data['uroute'] = "update-article";
+    // //      $data['cn']= Article::findOrFail($id);
     // //        $data['acys']= AcademicYear::orderBy('id','asc')->get();
 
-    // //      return view('admin.edit-contribution',$data);
+    // //      return view('admin.edit-article',$data);
     // // }
 
 
-    // //   public function editContribution($id)
+    // //   public function editArticle($id)
     // // {
-    // //      $data['title'] = "Update Contribution";
-    // //      $data['uroute'] = "update-contribution";
-    // //      $data['cn']= Contribution::findOrFail($id);
+    // //      $data['title'] = "Update Article";
+    // //      $data['uroute'] = "update-article";
+    // //      $data['cn']= Article::findOrFail($id);
     // //        $data['acys']= AcademicYear::orderBy('id','asc')->get();
 
-    // //      return view('admin.edit-contribution',$data);
+    // //      return view('admin.edit-article',$data);
     // // }
 
 
-    public function postContribution(Request $request)
+    public function postArticle(Request $request)
     {
-        $data['title'] = "Contribution";
-        //$data['eroute'] = "edit-contribution";
+        $data['title'] = "Article";
+        //$data['eroute'] = "edit-article";
 
         $this->validate($request,[
             'title' => 'required|string|max:255',
-            'year' => 'required|exists:academic_years,year',
+            'year' => 'required',
             'doc' => 'required|file|mimes:doc,docx,pdf|max:5120',
             'file' => 'required',
             'file.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -407,57 +411,129 @@ class StudentController extends Controller
 
         $con['title'] = $request->title;
         $con['year'] = $request->year;
-        $con['user_id'] = Auth::guard('student')->user()->id;
+        $con['dep_id'] = $request->department;
+        $con['std_id'] = Auth::guard('student')->user()->id;
+
+     if ($request->doc) {
+         $cyr = date("Y");
+         $cmo = date("m");
+
+         $con['file_name'] = $cyr . '/' . $cmo . '/' .$request->doc->getClientOriginalName();
+         $request->doc->store('public/upload');
+
+        $docname = pathinfo($request->doc->getClientOriginalName(), PATHINFO_FILENAME);
+
+        $docname = preg_replace('!\s+!', ' ', $docname);
+        $docname = str_replace(' ', '-', $docname);
+        $docname = strtolower($docname);
+
+        $doc = $docname . '.' . $request->doc->getClientOriginalExtension();
+
+// $count = 0;
+// $doccount = 1;
+
+// while ($count < 1) {
+// $hasPhoto = Article::wherePhoto($doc)->first();
+// if ($hasPhoto) {
+// $newdocname = $docname . '_' . $doccount;
+// $doc = $newdocname . '.' . $request->doc->getClientOriginalExtension();
+// $doccount++;
+// } else {
+// $count++;
+// }
+// }
+$request->doc->move(public_path('upload/' . $cyr . '/' . $cmo), $doc);
+
+$doc = $cyr . '/' . $cmo . '/' . $doc;
+
+$img['doc'] = $doc;
+}
 
 
-        $con['file_name'] = $request->doc->getClientOriginalName();
-        $request->doc->store('public/upload');
+
+
+
+
+
 
         $files = $request->file('file');
 
 
 
-        $con = Contribution::create($con);
+        $con = Article::create($con);
 
         $lcon = $con->id;
 
         foreach ($files as $file) {
 
-            $img['con_id'] = $lcon;
-            $img['name'] = $file->getClientOriginalName();
-            $file->store('public/upload');
+            $img['art_id'] = $lcon;
+            $img['photo'] = $file->getClientOriginalName();
+            // $file->store('public/upload');
+
+     if ($file) {
+
+$photoname = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+
+$photoname = preg_replace('!\s+!', ' ', $photoname);
+$photoname = str_replace(' ', '-', $photoname);
+$photoname = strtolower($photoname);
+
+$photo = $photoname . '.' . $file->getClientOriginalExtension();
+
+$count = 0;
+$photocount = 1;
+
+while ($count < 1) {
+$hasPhoto = ArtImg::wherePhoto($photo)->first();
+if ($hasPhoto) {
+$newphotoname = $photoname . '_' . $photocount;
+$photo = $newphotoname . '.' . $file->getClientOriginalExtension();
+$photocount++;
+} else {
+$count++;
+}
+}
+
+$cyr = date("Y");
+$cmo = date("m");
+
+$file->move(public_path('upload/' . $cyr . '/' . $cmo), $photo);
+
+$photo = $cyr . '/' . $cmo . '/' . $photo;
+
+$img['photo'] = $photo;
+}
 
 
-
-            ConPhoto::create($img);
+            ArtImg::create($img);
            
         }
 
         
 
-        session()->flash('message', 'Contribution Successfully Added!');
+        session()->flash('message', 'Article Successfully Added!');
         Session::flash('type', 'success');
         return redirect()->back();
     }
 
 
 
- public function editContribution($id)
+ public function editArticle($id)
 
     {
-        $data['title'] = "Contribution";
+        $data['title'] = "Article";
 
-        //$data['uroute'] = "update-stdcontribution";
-        // $data['route'] = "stdcontributions";
+        //$data['uroute'] = "update-stdarticle";
+        // $data['route'] = "stdarticles";
 
         $data['isDep'] = 2;
         // $data['eroute'] = "edit-academic-year";
 
         
 
-        $data['ay'] = Contribution::findOrFail($id);
+        $data['ay'] = Article::findOrFail($id);
 
-       $con = Contribution::findOrFail($id);
+       $con = Article::findOrFail($id);
 
      //  $uid = Auth::student()->id; 
 
@@ -466,7 +542,7 @@ class StudentController extends Controller
        //  if ($uid != $con->std_id) {
        //      session()->flash('message', 'You do not have permission to view this page!');
        //      Session::flash('type', 'error');
-       //      return redirect()->route('studentcontributions');
+       //      return redirect()->route('studentarticles');
        //  }
 
         $acyear = AcademicYear::where('year',$con->year)->first();
@@ -494,11 +570,11 @@ class StudentController extends Controller
             if ($diff < 0) {
             session()->flash('message', 'You can not edit after Final Submission date of the academic year!');
             Session::flash('type', 'error');
-            return redirect()->route('studentcontributions');
+            return redirect()->route('studentarticles');
             }
 
 
-        $con = Contribution::findOrFail($id);
+        $con = Article::findOrFail($id);
 
         
 
@@ -508,7 +584,7 @@ class StudentController extends Controller
 
 
 
-        return view('admin.edit-contribution', $data);
+        return view('admin.edit-article', $data);
     }
 
 
@@ -522,7 +598,7 @@ class StudentController extends Controller
 
 
 
-    //  public function updateContribution($id, Request $request)
+    //  public function updateArticle($id, Request $request)
     // {
 
     //     $this->validate($request,[
@@ -545,36 +621,38 @@ class StudentController extends Controller
     // }
 
 
- public function updateContribution($id, Request $request)
+ public function updateArticle($id, Request $request)
     {
-        $data['title'] = "Contribution";
-        // $data['eroute'] = "edit-contribution";
+        $data['title'] = "Article";
+        // $data['eroute'] = "edit-article";
 
         $this->validate($request,[
             'title' => 'required|string|max:255',
-            'year' => 'required|exists:academic_years,id',
+            //'year' => 'required|exists:academic_years,id',
             'doc' => 'file|mimes:doc,docx,pdf|max:5120',
             'file' => 'required',
             'file.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         // dd($diff."<br>".$cdiff."<br>".$fdiff);
-        $con = Contribution::findOrFail($id);
+        $con = Article::findOrFail($id);
 
        $uid = Auth::guard('student')->user()->id;
 
-        if ($uid != $con->user_id) {
-           session()->flash('message', 'You do not have permission to view this page!');
-            Session::flash('type', 'error');
-            return redirect()->route('studentcontributions');
-        }
+        // if ($uid != $con->user_id) {
+        //    session()->flash('message', 'You do not have permission to view this page!');
+        //     Session::flash('type', 'error');
+        //     return redirect()->route('studentarticles');
+        // }
 
         
 
-        $acyear = AcademicYear::findOrFail($con->academic_year);
+        $acyear = AcademicYear::where('year',$con->year)->first();
 
         $ct = Carbon::today();
         // $cn = Carbon::now();
+
+        // dd($acyear);
 
             $odiff = $ct->diffInDays($acyear->opening_date, false);
 
@@ -595,81 +673,202 @@ class StudentController extends Controller
             if ($diff < 0) {
             session()->flash('message', 'You can not edit after the Final Submission date of the academic year!');
             Session::flash('type', 'error');
-            return redirect()->route('studentcontributions');
+            return redirect()->route('studentarticles');
             }
 
 
         $con['title'] = $request->title;
-        $con['year'] = $request->academic_year;
+        // $con['year'] = $request->academic_year;
         // $con['user_id'] = Auth::user()->id;
 
 
-        if ($request->doc) {
-            $con['file_name'] = $request->doc->getClientOriginalName();
+            if ($request->doc) {
+         $cyr = date("Y");
+         $cmo = date("m");
 
-            $request->doc->store('public/upload');
+         $con['file_name'] = $cyr . '/' . $cmo . '/' .$request->doc->getClientOriginalName();
+         $request->doc->store('public/upload');
 
-            
-        }
+        $docname = pathinfo($request->doc->getClientOriginalName(), PATHINFO_FILENAME);
 
-        
-        
+        $docname = preg_replace('!\s+!', ' ', $docname);
+        $docname = str_replace(' ', '-', $docname);
+        $docname = strtolower($docname);
 
-        
+        $doc = $docname . '.' . $request->doc->getClientOriginalExtension();
+
+// $count = 0;
+// $doccount = 1;
+
+// while ($count < 1) {
+// $hasPhoto = Article::wherePhoto($doc)->first();
+// if ($hasPhoto) {
+// $newdocname = $docname . '_' . $doccount;
+// $doc = $newdocname . '.' . $request->doc->getClientOriginalExtension();
+// $doccount++;
+// } else {
+// $count++;
+// }
+// }
+$request->doc->move(public_path('upload/' . $cyr . '/' . $cmo), $doc);
+
+$doc = $cyr . '/' . $cmo . '/' . $doc;
+
+$img['doc'] = $doc;
+}
+
+
+
+
+
+
+
+
+        $files = $request->file('file');
+
+
 
         $con->save();
 
-        $lcon = $id;
+        $lcon = $con->id;
 
-        if ($request->file('file')) {
+        foreach ($files as $file) {
 
-            $files = $request->file('file');
+            $img['art_id'] = $lcon;
+            $img['photo'] = $file->getClientOriginalName();
+            // $file->store('public/upload');
 
-            foreach ($files as $file) {
+     if ($file) {
 
-                $img['con_id'] = $lcon;
-                $img['name'] = $file->getClientOriginalName();
-                $file->store('public/upload');
+$photoname = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
-                ConImg::create($img);
-               
-            }
+$photoname = preg_replace('!\s+!', ' ', $photoname);
+$photoname = str_replace(' ', '-', $photoname);
+$photoname = strtolower($photoname);
 
+$photo = $photoname . '.' . $file->getClientOriginalExtension();
+
+$count = 0;
+$photocount = 1;
+
+while ($count < 1) {
+$hasPhoto = ArtImg::wherePhoto($photo)->first();
+if ($hasPhoto) {
+$newphotoname = $photoname . '_' . $photocount;
+$photo = $newphotoname . '.' . $file->getClientOriginalExtension();
+$photocount++;
+} else {
+$count++;
+}
+}
+
+$cyr = date("Y");
+$cmo = date("m");
+
+$file->move(public_path('upload/' . $cyr . '/' . $cmo), $photo);
+
+$photo = $cyr . '/' . $cmo . '/' . $photo;
+
+$img['photo'] = $photo;
+}
+
+
+            ArtImg::create($img);
+           
         }
+
+
+
+
+
 
         
 
-        session()->flash('message', 'Contribution Successfully Updated!');
+        session()->flash('message', 'Article Successfully Updated!');
         Session::flash('type', 'success');
         return redirect()->back();
     }
 
 
-       public function getSingleContribution($id)
+    //    public function getSingleArticle($id)
+    // {
+    //     $data['title'] = "Single Article";
+
+    //     // $data['uroute'] = "update-article";
+    //     $data['route'] = "add-stdcomment";
+    //     $data['eroute'] = "edit-stdarticle";
+
+    //     // $uid = Auth::user()->id;
+
+    //     // $data['isDep'] = 2;
+    //     // $data['eroute'] = "edit-academic-year";
+    //     $data['artimgs'] = ArtImg::where('art_id',$id)->get();
+    //     $data['con'] = Article::findOrFail($id);
+      
+    //     // $con = Article::findOrFail($id);
+
+
+    //     // if ($uid != $con->user_id) {
+
+    //     // session()->flash('message', "You don't have the required permission to view the requested page!");
+    //     // Session::flash('type', 'danger');
+    //     // return redirect()->back();        
+    //     // }
+
+    //             //  $data['comments'] = Comment::whereConId($id)->orderBy('id', 'asc')->paginate(10);
+    //             //  $data['comcount'] = Comment::whereConId($id)->count();
+
+    //    // $con = Article::findOrFail($id);
+
+    //     // $acyear = AcademicYear::findOrFail($con->academic_year);
+
+
+
+    //     // $con = Article::findOrFail($id);
+
+    //     // $uid = Auth::user()->id; 
+
+    //     // if ($uid != $con->user_id) {
+    //     //     session()->flash('message', 'You do not have permission to view this page!');
+    //     //     Session::flash('type', 'error');
+    //     //     return redirect()->route('stdarticles');
+    //     // }
+    //     return view('admin.single-article', $data);
+    // }
+
+
+
+
+
+
+ public function getSingleArticle($id)
     {
-        $data['title'] = "Contribution";
+        $data['title'] = "Single Article";
 
         // $data['uroute'] = "update-contribution";
         $data['route'] = "add-stdcomment";
         $data['eroute'] = "edit-stdcontribution";
 
-        // $uid = Auth::user()->id;
+                //$uid = Auth::user()->id;
+
+        $data['artimgs'] = ArtImg::where('art_id',$id)->get();
+        $data['con'] = Article::findOrFail($id);
 
         // $data['isDep'] = 2;
         // $data['eroute'] = "edit-academic-year";
-        $data['con'] = Contribution::findOrFail($id);
-        $con = Contribution::findOrFail($id);
+                // $data['con'] = Contribution::findOrFail($id);
+                // $cons = Contribution::findOrFail($id);
 
 
-        // if ($uid != $con->user_id) {
+                // if ($uid != $cons->user_id) {
 
-        // session()->flash('message', "You don't have the required permission to view the requested page!");
-        // Session::flash('type', 'danger');
-        // return redirect()->back();        
-        // }
+                // session()->flash('message', "You don't have the required permission to view the requested page!");
+                // Session::flash('type', 'danger');
+                // return redirect()->back();        
+                // }
 
-                //  $data['comments'] = Comment::whereConId($id)->orderBy('id', 'asc')->paginate(10);
-                //  $data['comcount'] = Comment::whereConId($id)->count();
+                        $data['comments'] = Comment::whereArtId($id)->orderBy('id', 'asc')->paginate(10);
+                        $data['comcount'] = Comment::whereArtId($id)->count();
 
        // $con = Contribution::findOrFail($id);
 
@@ -677,7 +876,7 @@ class StudentController extends Controller
 
 
 
-        $con = Contribution::findOrFail($id);
+        $con = Article::findOrFail($id);
 
         // $uid = Auth::user()->id; 
 
@@ -691,6 +890,103 @@ class StudentController extends Controller
 
 
 
-        return view('admin.single-contribution', $data);
+        return view('admin.single-article', $data);
     }
+
+
+
+
+    public function postComment($id,Request $request)
+    {
+
+
+        $con = Article::findOrFail($id);
+        $uid = Auth::guard('student')->user()->id; 
+
+
+       if ($con->status ==2 || $con->status ==4) {
+
+       $this->validate($request,[
+            'comment' => 'required|string',
+        ]);
+
+
+        $com['comment'] = $request->comment;
+        $com['user_id'] = $uid;
+        $com['user_role'] = 3; // 1=admin, 3=student, 2= coordinator, 4= faculty
+        $com['art_id'] = $id;
+
+        Comment::create($com);
+
+        session()->flash('message', 'Comment Successfully Added!');
+        Session::flash('type', 'success');
+        return redirect()->back();
+
+
+        }
+
+        else{
+        session()->flash('message', 'You can not interact with a faculty unless it has been commented!');
+        Session::flash('type', 'warning');
+
+        return redirect()->back();
+       }
+    }
+
+
+
+
+
+
+//     public function addStudent()
+//     {
+
+//         $data['title'] ="User Profile";
+//         //$uid = Auth::user()->id;
+
+//         // $uid = Auth::guard('admin')->user()->id;
+
+
+//         // $data['user'] =Admin::findOrFail($uid);
+     
+//         return view('admin.add-user',$data);
+//     }
+
+
+
+
+//       public function postStudent( Request $request)
+//     {
+//       $this->validate($request,[
+//             'first_name' => ['required', 'string', 'max:255'],
+//             // 'last_name' => ['required', 'string', 'max:255'],
+//             // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+//             // 'phone' => ['required', 'string'],
+//             // 'role' => ['required', 'numeric','max:20'],
+//             // 'password' => ['required', 'string', 'min:6', 'confirmed'],
+//         ]);
+
+
+        
+// // 'password' => Hash::make($data['password']),
+      
+
+//         $addstudent['first_name'] = $request->first_name;
+//         // $adduser['last_name'] = $request->last_name;
+//         // $adduser['email'] = $request->email;
+//         // $adduser['phone'] = $request->phone;
+//         // $adduser['role'] = $request->role;
+//         // $adduser['password'] = Hash::make($request->password);
+
+//         Student::create($addstudent);
+
+
+
+
+
+//         session()->flash('message', 'Student Successfully Added!');
+//         Session::flash('type', 'success');
+//         return redirect()->back();
+//     }
+
 }

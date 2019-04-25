@@ -129,7 +129,7 @@
 @endif
 <!-- ==================================VALIDATION MESSAGES================================== -->
 
-                            <form class="form" action="{{route('update-user')}}" method="post" id="registrationForm" enctype="multipart/form-data">
+                            <form class="form" action="{{route('update-user-profile')}}" method="post" id="registrationForm" enctype="multipart/form-data">
 
                                 @csrf
 
@@ -176,7 +176,7 @@
                                   <div class="form-group">
                                        <div class="col-xs-12">
                                             <br>
-                                            <button class=" cat-delete btn btn-lg btn-success" type="submit"><i class=" mdi mdi-checkbox-marked-circle"></i> Update</button>
+                                            <button class=" data-href btn btn-lg btn-success" type="submit"><i class=" mdi mdi-checkbox-marked-circle"></i> Update</button>
                                             {{-- <button class="btn btn-lg" type="reset"><i class="dripicons-clockwise"></i> Reset</button> --}}
                                         </div>
                                   </div>

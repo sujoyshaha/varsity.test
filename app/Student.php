@@ -31,10 +31,9 @@ class Student extends Model implements AuthenticatableContract,
     protected $fillable = [
         'first_name',
         'last_name',
-        'username',
         'email',
         'phone',
-        'role',
+        'department_id',
         'photo',
         'password',
         'remember_token',
@@ -53,4 +52,10 @@ class Student extends Model implements AuthenticatableContract,
         'password',
         'remember_token',
     ];
+
+
+
+     public function article(){
+        return $this->hasMany(Article::class,"std_id","id");
+    }
 }

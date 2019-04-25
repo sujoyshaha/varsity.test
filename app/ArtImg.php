@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ConPhoto extends Model
+class ArtImg extends Model
 {
     protected $fillable = [
-        'con_id','name',
+        'art_id','photo',
     ];
 
 

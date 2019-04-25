@@ -31,9 +31,9 @@
      
                                 <div class="card-box">
                                     
-                                   <button type="button" class="btn btn-lg btn-info  "  data-toggle="modal" data-target="#myModal"> <i class="  mdi mdi-plus-circle
+                                   {{-- <button type="button" class="btn btn-lg btn-info  "  data-toggle="modal" data-target="#myModal"> <i class="  mdi mdi-plus-circle
 
-"></i> <span>Add</span> </button> <br />
+"></i> <span>Add</span> </button> <br /> --}}
 
 
 
@@ -42,27 +42,30 @@
 
 
         
-                                    <table class="table">
-                                        <thead>
-                            <tr>
-                                <th style="width: 10px">ID</th>
-                                <th class="align-middle">Article Name</th>
-                                <th class="align-middle">Opening Date</th>
-                                <th class="align-middle">Closing Date</th>
-                                <th class="align-middle">Submitted</th>        
-                                <th class="align-middle">Academic Year</th>
-                                
-                                
-                                
-                                {{-- <th>Final Date</th> --}}
-                                <th>Status</th>
-                                {{-- <th>Time Left to Update File</th> --}}
-                                
-                                {{-- <th>Progress</th> --}}
-                                <th style="width: 40px">Timeleft</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                                    {{-- <table class="table"> --}}
+
+                                     
+
+                                <table id="selection-datatable" class="table table-bordered dt-responsive nowrap">
+                                  <thead>
+                                      <tr>
+                                          <th>ID</th>
+                                          <th>Article Name</th>
+                                          <th>Opening Date</th>
+                                          <th>Closing Date</th>
+                                          <th>Submitted</th>        
+                                          <th>Submitted By</th>        
+                                          <th>Academic Year</th>
+                                                                       
+                                          {{-- <th>Final Date</th> --}}
+                                          <th>Status</th>
+                                          {{-- <th>Time Left to Update File</th> --}}
+                                          
+                                          {{-- <th>Progress</th> --}}
+                                          <th>Timeleft</th>
+                                          <th>Action</th>
+                                      </tr>
+                            </thead>
                         <tbody>
 
                         @foreach($cns as $cn)
@@ -73,7 +76,9 @@
                             <td class="align-middle">{{ $cn->ayear->opening_date }}</td>
                             <td class="align-middle">{{ $cn->ayear->closing_date }}</td>
                             {{-- <td class="align-middle">{{ $cn->ayear->final_date }}</td> --}}
-                            <td class="align-middle">{{ $cn->created_at }}</td>
+                            <td class="align-middle">{{ $cn->created_at }}</td> 
+                            <td class="align-middle">{{ $cn->student->first_name }} {{ $cn->student->last_name }}</td> 
+
                             <td class="align-middle">{{ $cn->year }}</td>
 
 
@@ -81,15 +86,15 @@
 
                                <td class="align-middle">
 
-                              @if($cn->status == 1)
+                              @if($cn->file_status == 1)
 
                               <span class="badge bg-primary text-white">Submitted</span>
 
-                              @elseif($cn->status == 2)
+                              @elseif($cn->file_status == 2)
 
                               <span class="badge bg-warning text-white">Commented</span>
 
-                              @elseif($cn->status == 3)
+                              @elseif($cn->file_status == 3)
 
                               <span class="badge bg-success text-white">Accepted</span>
                               @else
@@ -131,7 +136,7 @@
                                 </span></td>
 
 
-                            <td><a href="{{ route('single-stdcontribution', $cn->id) }}" class="btn btn-primary ">View</a> <a href="{{route($eroute, $cn->id)}}" class="btn btn-primary "><i class="mdi mdi-square-edit-outline"></i> <span> Edit</span></a>  </td>
+                            <td><a href="{{ route('single-stdarticle', $cn->id) }}" class="btn btn-primary ">View</a> <a href="{{route($eroute, $cn->id)}}" class="btn btn-primary "><i class="mdi mdi-square-edit-outline"></i> <span> Edit</span></a>  </td>
                           </tr>
 
                         @endforeach
@@ -140,7 +145,7 @@
 
 
                                     </table>
-                                    {{$cns}}
+                                   {{--  {{$cns}} --}}
                                 </div> <!-- end card-box -->
          
      
@@ -166,6 +171,35 @@
 
 
 @section('scripts')
+
+
+
+
+
+
+     {{--    <script>
+  $(function () {
+    $("#selection-datatable").addClass( 'nowrap' ).DataTable({
+      "responsive": true
+    });
+    // $('#example2').DataTable({
+    //   "paging": true,
+    //   "lengthChange": false,
+    //   "searching": false,
+    //   "ordering": true,
+    //   "info": true,
+    //   "autoWidth": false
+    // });
+  });
+</script> --}}
+
+
+
+
+@endsection
+
+
+@section('datatable-files')
 
 
 

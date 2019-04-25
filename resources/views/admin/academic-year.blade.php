@@ -31,10 +31,7 @@
       
      
                                 <div class="card-box">
-                                    <h2 class="m-t-0 header-title d-inline">Basic example</h2>
-                                   <button type="button" class="btn btn-lg btn-info float-right"  data-toggle="modal" data-target="#myModal"> <i class="  mdi mdi-plus-circle
-
-"></i> <span>Add</span> </button>
+                                   
 
 
 
@@ -43,10 +40,10 @@
 
 
         
-                                    <table class="table">
+                                   <table id="selection-datatable" class="table table-bordered dt-responsive nowrap">
                                         <thead>
                             <tr>
-                                <th style="width: 10px">#</th>
+                                <th style="width: 10px">ID</th>
                                 <th>Year</th>
                                 <th>Opening Date</th>
                                 <th>Closing Date</th>
@@ -121,7 +118,7 @@
 
 
                                     </table>
-                                    {{$ays}}
+                                    {{-- {{$ays}} --}}
                                 </div> <!-- end card-box -->
          
      

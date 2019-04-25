@@ -18,29 +18,70 @@
                                 <a href="#">
                                     <i class="mdi mdi-view-dashboard"></i> <span> Dashboard </span>
                                 </a>
-                            </li>
+                            </li> 
+
+
+                            <li>
+                                <a href="javascript: void(0);"><i class="mdi mdi-email-outline"></i><span> Academic Years </span> <span class="menu-arrow"></span></a>
+                                <ul class="nav-second-level" aria-expanded="false">
 
                             <li>
                                 <a href="{{route('academic-years')}}">
-                                    <i class="mdi mdi-calendar-check"></i> <span> Academic Years </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('departments')}}">
-                                    <i class="mdi mdi-calendar-check"></i> <span> Departments </span>
-                                </a>
-                            </li>
-                             <li>
-                                <a href="{{route('contributions')}}">
-                                    <i class="mdi mdi-calendar-check"></i> <span> Contributions </span>
+                                    <i class="mdi mdi-calendar-check"></i> <span> Academic Years List </span>
                                 </a>
                             </li>
 
+                            <li>
+                                <a href="{{route('add-academic-year')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span> Add Academic Year </span>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                        </li>
+
+                            <li>
+                                <a href="javascript: void(0);"><i class="mdi mdi-email-outline"></i><span> Departments </span> <span class="menu-arrow"></span></a>
+                                <ul class="nav-second-level" aria-expanded="false">
+
+                                    <li> <a href="{{route('departments')}}"><i class="mdi mdi-calendar-check"></i> <span> Department List </span></a></li>
+
+                                    <li><a href="{{route('add-department')}}"><i class="mdi mdi-view-dashboard"></i> <span> Add Department </span></a> </li>
+
+                            
+                            
+                            </ul>
+
+                            </li>
+
+
+                             <li>
+                                <a href="{{route('articles')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span> Articles </span>
+                                </a>
+                            </li>       
+
+                            <li>
+                                <a href="{{route('article-report')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span> Reports </span>
+                                </a>
+                            </li>
 
                            <li>
-                                <a href="javascript: void(0);"><i class="mdi mdi-email-outline"></i><span> Email </span> <span class="menu-arrow"></span></a>
+                                <a href="javascript: void(0);"><i class="mdi mdi-email-outline"></i><span> Users </span> <span class="menu-arrow"></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
-                                    <li><a href="email-inbox.html">Add Student</a></li>
+                                    <li>
+                                <a href="{{route('add-user')}}">
+                                    <i class="mdi mdi-view-dashboard"></i> <span> Add user </span>
+                                </a>
+                                    </li>
+
+                                <li>
+                                    <a href="{{route('allusers')}}">
+                                    <i class="mdi mdi-view-dashboard"></i> <span> User List</span>
+                                    </a>
+                                </li>
                                      
                                 </ul>
                             </li>
@@ -57,14 +98,14 @@
                             
 
                             <li>
-                                <a href="javascript: void(0);"><i class="mdi mdi-email-outline"></i><span> Contributions </span> <span class="menu-arrow"></span></a>
+                                <a href="javascript: void(0);"><i class="mdi mdi-email-outline"></i><span> Articles </span> <span class="menu-arrow"></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
-                                    <li><a href="{{route('studentcontributions')}}">
-                                    <i class="mdi mdi-calendar-check"></i> <span> Contributions List </span>
+                                    <li><a href="{{route('studentarticles')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span> Articles List </span>
                                 </a></li> 
 
-                                <li><a href="{{route('add-studentcontribution')}}">
-                                    <i class="mdi mdi-calendar-check"></i> <span>Add Contributions</span>
+                                <li><a href="{{route('add-studentarticle')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span>Add Articles</span>
                                 </a></li>
                                      
                                 </ul>
@@ -72,15 +113,15 @@
 
                             @elseif(Auth::guard('faculty')->check())
                              <li>
-                                <a href="{{route('facultycontributions')}}">
-                                    <i class="mdi mdi-calendar-check"></i> <span> Contributions </span>
+                                <a href="{{route('facultyarticles')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span> Articles </span>
                                 </a>
                             </li>
 
                             @elseif(Auth::guard('coordinator')->check())
                              <li>
-                                <a href="{{route('coordinatorcontributions')}}">
-                                    <i class="mdi mdi-calendar-check"></i> <span> Contributions </span>
+                                <a href="{{route('coordinatorarticles')}}">
+                                    <i class="mdi mdi-calendar-check"></i> <span> Articles </span>
                                 </a>
                             </li>
                             @endif

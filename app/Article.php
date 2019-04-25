@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Contribution extends Model
+class Article extends Model
 {
     protected $fillable = [
-        'file_name','std_id','file_status','year','title',
+        'file_name','std_id','file_status','year','title','dep_id'
     ];
 
 
@@ -20,6 +20,15 @@ class Contribution extends Model
     {
     	return $this->belongsTo(Student::class, 'std_id');
     }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'dep_id');
+    }
+// public function artimg()
+//     {
+//         return $this->belongsTo(ArtImg::class, 'photo');
+//     }
 
 
     
