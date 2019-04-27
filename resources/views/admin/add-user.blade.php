@@ -49,11 +49,11 @@
         
                                             <select class="form-control" id="change-user-type">
                                                 
-                                                <option value='{{ route('post-user') }}1'>Administration</option>
-                                                <option value='{{ route('post-user') }}2'>Marketing Manager</option>
-                                                <option value='{{ route('post-user') }}3'>Marketing Coordinator</option>
+                                                <option value='{{ route('post-admin') }}'>Administration</option>
+                                                <option value='{{ route('post-manager') }}'>Marketing Manager</option>
+                                                <option value='{{ route('post-coordinator') }}'>Marketing Coordinator</option>
                                                 <option value='{{ route('post-student')}}'>Student</option>
-                                                <option value='{{ route('post-user') }}4'>Faculty(Guest)</option>
+                                                <option value='{{ route('post-faculty') }}'>Faculty(Guest)</option>
                                             </select>
 
 

@@ -21,16 +21,18 @@
 
 
 
-<div class="col-lg-12">
+<div class="col-lg-10 ">
+
+  
 
 
 
-    <div class="row">
+    <div class="row justify-content-center">
 
 
 
 
-        <div class="card-box">
+        <div class="card-box col-8">
 
 
             <form role="form" method="post" action="{{route('post-studentarticle')}}" enctype="multipart/form-data">
@@ -51,15 +53,6 @@
             @endforeach --}}
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Department</label>
-                        <select class="form-control" id="role" name="department">
-                            <option>-- Select Department --</option>
-                            @foreach($dep as $value)
-                                <option value="{{$value->id}}">{{$value->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">Article title</label>
@@ -75,14 +68,28 @@
                         <input type="file" class="form-control" id="closing-date" name="file[]" placeholder="DD/MM" multiple="" value="{{old('files')}}">
                     </div>
 
+                     <div class="form-group">
+                        <label for="exampleInputPassword1"><input type="checkbox" id="checkme" /> Agree to Terms and Conditions </label>
+
+
+
+                       
+  {{-- <input type="submit" name="sendNewSms" class="inputButton" disabled="disabled" id="sendNewSms" value=" Send " /> --}}
+                        
+
+                        
+                    </div>
+
+                      
+
 
 
 
 
 
                     {{-- <a href="{{ route('articles') }}" class="btn btn-secondary" >Back</a> --}}
-                    <a href="{{ route('articles') }}"class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</a>
-                    <button type="submit" class="btn  btn-success"><i class="fas fa-plus"></i> Add {{$title}}</button>
+                    <a href="{{ route('studentarticles') }}"class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</a>
+                    <button type="submit" class="btn  btn-success inputButton " disabled="disabled" id="sendNewSms"><i class="fas fa-plus"></i> Add {{$title}}</button>
                 </div>
 
 
@@ -158,6 +165,27 @@
                 };
             })(els[i]);
         }
+    </script>
+
+
+    <script>
+
+
+         var checker = document.getElementById('checkme');
+         var sendbtn = document.getElementById('sendNewSms');
+         // when unchecked or checked, run the function
+         checker.onchange = function(){
+        if(this.checked){
+            sendbtn.disabled = false;
+        } else {
+            sendbtn.disabled = true;
+        }
+
+        }
+        
+
+
+
     </script>
 
 @endsection

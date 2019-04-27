@@ -69,7 +69,7 @@
         }
         .login_btn {
             width: 100%;
-            background: #c0392b !important;
+            background: #000 !important;
             color: white !important;
         }
         .login_btn:focus {
@@ -80,7 +80,7 @@
             padding: 0 2rem;
         }
         .input-group-text {
-            background: #c0392b !important;
+            background: #000 !important;
             color: white !important;
             border: 0 !important;
             border-radius: 0.25rem 0 0 0.25rem !important;
@@ -95,6 +95,19 @@
         }
 
 
+.alert {
+    
+    color: red !important;
+    font-size: 18px;
+}
+
+button.close {
+   
+     color: red !important;
+
+     font-size: 26px;
+}
+}
 
     </style>
 </head>

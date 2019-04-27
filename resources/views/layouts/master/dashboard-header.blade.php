@@ -79,7 +79,7 @@
                                 --}}        
                         @else
 
-                        src="{{asset('images/no-image.png')}}"
+                        src="{{asset('assets/images/no-image.png')}}"
                         @endif
         
 
@@ -91,14 +91,23 @@
                                 <div class="dropdown-item noti-title">
                                     <h6 class="text-overflow m-0">Welcome !</h6>
                                 </div>
-    
+
+                                @if(Auth::guard('admin')->check())
                                 <!-- item-->
                                 <a href="{{route('user-profile')}}" class="dropdown-item notify-item">
                                     <i class="dripicons-user"></i> <span>My Account</span>
+                                </a> 
+
+                                @elseif(Auth::guard('student')->check())
+
+                                <a href="{{route('student-profile')}}" class="dropdown-item notify-item">
+                                    <i class="dripicons-user"></i> <span>My Account</span>
                                 </a>
+
+                                @endif
     
                                 <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                               {{--  <a href="javascript:void(0);" class="dropdown-item notify-item">
                                     <i class="dripicons-gear"></i> <span>Settings</span>
                                 </a>
     
@@ -110,7 +119,7 @@
                                 <!-- item-->
                                 <a href="javascript:void(0);" class="dropdown-item notify-item">
                                     <i class="dripicons-lock"></i> <span>Lock Screen</span>
-                                </a>
+                                </a> --}}
     
                                 <!-- item-->
 

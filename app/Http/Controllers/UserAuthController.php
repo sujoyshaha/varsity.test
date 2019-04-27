@@ -14,6 +14,8 @@ class UserAuthController extends Controller
         $data['login'] = 'post-student-login';
         return view('auth.login-admin', $data);
     }
+
+    
     public function studentLogin(Request $request){
         if (Auth::guard('student')->attempt([
             'email' => $request->username,
@@ -22,7 +24,7 @@ class UserAuthController extends Controller
         ) {
 
             // Authentication passed...
-            return redirect('/student/articles');
+            return redirect('/student/student-profile');
         }
         $request->session()->flash('message', 'Login incorrect!');
         return redirect()->back();
@@ -38,7 +40,7 @@ class UserAuthController extends Controller
         ) {
 
             // Authentication passed...
-            return redirect('/student/articles');
+            return redirect('/student/student-profile');
         }
 
         if (Auth::guard('coordinator')->attempt([
@@ -48,7 +50,7 @@ class UserAuthController extends Controller
         ) {
 
             // Authentication passed...
-            return redirect('/coordinator/contributions');
+            return redirect('/coordinator/coordinator-profile');
         }
 
         if (Auth::guard('manager')->attempt([
@@ -58,7 +60,7 @@ class UserAuthController extends Controller
         ) {
 
             // Authentication passed...
-            return redirect('/manager/contributions');
+            return redirect('/manager/manager-profile');
         }
 
         if (Auth::guard('faculty')->attempt([
@@ -68,7 +70,7 @@ class UserAuthController extends Controller
         ) {
 
             // Authentication passed...
-            return redirect('/faculty/contributions');
+            return redirect('/faculty/faculty-profile');
         }
 
         if (Auth::guard('admin')->attempt([
@@ -78,7 +80,7 @@ class UserAuthController extends Controller
         ) {
 
             // Authentication passed...
-            return redirect('/admin/academic-years');
+            return redirect('/admin/dashboard');
         }
 
         $request->session()->flash('message', 'Login incorrect!');

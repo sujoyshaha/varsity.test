@@ -38,7 +38,7 @@
 
 
 
-
+               
 
 
         
@@ -46,6 +46,7 @@
 
                                      
 
+{{--  @if(Auth::guard()->user()->role == 5) --}}
                                 <table id="selection-datatable" class="table table-bordered dt-responsive nowrap">
                                   <thead>
                                       <tr>
@@ -88,18 +89,28 @@
 
                               @if($cn->file_status == 1)
 
-                              <span class="badge bg-primary text-white">Submitted</span>
+                              <span class="btn btn-primary btn-sm">Submitted</span>
 
                               @elseif($cn->file_status == 2)
 
-                              <span class="badge bg-warning text-white">Commented</span>
+                              <span class="btn btn-warning btn-sm">Commented</span>
 
                               @elseif($cn->file_status == 3)
 
-                              <span class="badge bg-success text-white">Accepted</span>
+                              <span class="btn btn-success btn-sm">Accepted</span>
+
+
+                              @elseif($cn->file_status == 4)
+
+                              <span class="btn btn-success btn-sm">Accepted</span>
+
+                              
+                              <span class="btn btn-warning btn-sm">Commented</span>
+
+
                               @else
 
-                              <span class="badge bg-danger text-white">Rejected</span>
+                              <span class="btn btn-danger btn-sm">Rejected</span>
                               @endif
 
                             </td>
@@ -136,7 +147,14 @@
                                 </span></td>
 
 
-                            <td><a href="{{ route('single-stdarticle', $cn->id) }}" class="btn btn-primary ">View</a> <a href="{{route($eroute, $cn->id)}}" class="btn btn-primary "><i class="mdi mdi-square-edit-outline"></i> <span> Edit</span></a>  </td>
+                            <td><a href="{{ route('single-stdarticle', $cn->id) }}" class="btn btn-primary ">View</a> <a href="{{route($eroute, $cn->id)}}" class="btn btn-primary "><i class="mdi mdi-square-edit-outline"></i> <span> Edit</span></a> 
+
+
+                              <a href="{{ route('delete-article', $cn->id) }}" class="btn btn-danger ">Delete</a> 
+
+
+
+                              </td>
                           </tr>
 
                         @endforeach

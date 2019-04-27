@@ -123,16 +123,16 @@
                                         <p>
                                            
 
-                                              {{--   @if ($com->role = 1)
+                                                @if ($com->user_role == 1)
 
-                                                <strong>{{Auth::guard('admin')->user()->first_name}}</strong>
+                                                <strong>{{Auth::guard()->user()->first_name}}</strong>
 
-                                                @elseif ($com->role = 3)
+                                                @elseif ($com->user_role == 3)
 
-                                                <strong>{{Auth::guard('student')->user()->first_name}}</strong>
+                                                <strong>{{Auth::guard()->user('student')->first_name}}</strong>
 
 
-                                                @endif --}}
+                                                @endif
 
 
 
@@ -197,7 +197,26 @@
                         </div>            
                     </form>
                 </div>
+
+                @elseif(Auth::guard('coordinator')->check())
                                    
+                          <div class="tab-pane" id="add-comment">
+                    <form action="{{ route('post-cord-comment', $con->id) }}" method="post" class="form-horizontal" id="commentForm" role="form"> 
+                        @csrf
+                        <div class="form-group">
+                            <label for="email" class="col-sm-2 control-label">Comment</label>
+                            <div class="col-sm-12">
+                              <textarea class="form-control" name="comment" id="addComment" rows="5"></textarea>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">                    
+                                <button class="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Summit comment</button>
+                            </div>
+                        </div>            
+                    </form>
+                </div>
 
 
                   @elseif(Auth::guard('student')->check())

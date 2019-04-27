@@ -9,7 +9,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
         <!-- App favicon -->
-        <!-- <link rel="shortcut icon" href="assets/images/favicon.ico">-->
+         <link rel="shortcut icon" href=" {{ asset('assets/images/favicon.ico') }}">
 
         <!-- jvectormap -->
         {{-- <link href="{{ asset('assets/libs/jqvmap/jqvmap.min.css') }}" rel="stylesheet" /> --}}
@@ -88,7 +88,7 @@
                         <!-- Page title box -->
                         <div class="page-title-box">
                             <ol class="breadcrumb float-right">
-                                <li class="breadcrumb-item"><a href="javascript:void(0);">Greeva</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">Magazine</a></li>
                                 <li class="breadcrumb-item active">{{$title}}</li>
                             </ol>
                             <h4 class="page-title">{{$title}}</h4>

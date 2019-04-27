@@ -25,7 +25,7 @@
 
                    
 
-    <div class="row">
+    <div class="">
 
       
       
@@ -43,13 +43,13 @@
                                    <table id="selection-datatable" class="table table-bordered dt-responsive nowrap">
                                         <thead>
                             <tr>
-                                <th style="width: 10px">ID</th>
+                                <th>ID</th>
                                 <th>Year</th>
                                 <th>Opening Date</th>
                                 <th>Closing Date</th>
                                 <th>Final Date</th>
                                 {{-- <th>Progress</th> --}}
-                                <th style="width: 40px">Timeleft</th>
+                                <th>Timeleft</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -83,7 +83,7 @@
 
 
                             @endphp
-                            <td class="align-middle">
+                            <td>
 
                                 
                                 <span class="badge
@@ -136,54 +136,6 @@
 
 
 
-<div id="myModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title" id="myModalLabel">Academic year</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                </div>
-                                                <div class="modal-body" >
-                                                  
-                                                <form role="form" method="post" action="{{route('post-academic-year')}}">
-
-                                                  @csrf
-                                                  <div class="card-body">
-                                                    <div class="form-group">
-                                                      <label for="exampleInputEmail1">Academic Year</label>
-                                                      <input type="text" class="form-control" id="year" name="year" placeholder="2019" >
-                                                    </div>
-                                                    <div class="form-group">
-                                                      <label for="exampleInputPassword1">Opening Date</label>
-                                                      <input type="date" class="form-control" id="opening-date" name="opening_date" placeholder="DD/MM" >
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                      <label for="exampleInputPassword1">Closing Date</label>
-                                                      <input type="date" class="form-control" id="closing-date" name="closing_date" placeholder="DD/MM" >
-                                                    </div>
-
-
-                                                    <div class="form-group">
-                                                      <label for="exampleInputPassword1">Final Date</label>
-                                                      <input type="date" class="form-control" id="final-date" name="final_date" placeholder="DD/MM" >
-                                                    </div>
-
-
-                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</button>
-                                          <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add {{$title}}</button>
-                                                    </div>
-                                                 
-                                              
-                                              </div>
-                                              <!-- /.card -->
-                                        </div>
-                                        
-                                         </form>
-                                                    
-                                              
-                                            </div><!-- /.modal-content -->
-                                        </div><!-- /.modal-dialog -->
                                     </div>
                    
 @endsection

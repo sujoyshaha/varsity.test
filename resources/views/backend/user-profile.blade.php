@@ -46,7 +46,7 @@
         --}}        
         @else
 
-        src="{{asset('images/no-image.png')}}"
+        src="{{asset('assets/images/no-image.png')}}"
         @endif
 
          class="avatar img-circle img-thumbnail" alt="avatar">
@@ -129,7 +129,35 @@
 @endif
 <!-- ==================================VALIDATION MESSAGES================================== -->
 
-                            <form class="form" action="{{route('update-user-profile')}}" method="post" id="registrationForm" enctype="multipart/form-data">
+                            <form class="form" action="
+
+                            @if(Auth::guard('admin')->check())
+
+                            {{route('update-user-profile')}}
+
+                            @elseif(Auth::guard('student')->check())
+
+                            {{route('update-stduser-profile')}}
+
+
+                            @elseif(Auth::guard('coordinator')->check())
+
+                            {{route('update-corduser-profile')}}                           
+
+                             @elseif(Auth::guard('manager')->check())
+
+                            {{route('update-manauser-profile')}}                            
+
+                            @elseif(Auth::guard('faculty')->check())
+
+                            {{route('update-facuuser-profile')}}
+
+
+                            @endif
+
+
+
+                            " method="post" id="registrationForm" enctype="multipart/form-data">
 
                                 @csrf
 
@@ -191,7 +219,37 @@
 
 
 
-                             <form method="POST" action="{{route('post-pass')}}">
+                             <form method="POST" action="
+
+                              @if(Auth::guard('admin')->check())
+
+                             {{route('post-pass')}}
+
+                              @elseif(Auth::guard('student')->check())
+
+                              {{route('stdpost-pass')}}
+
+                                                         
+
+                              @elseif(Auth::guard('coordinator')->check())
+
+                              {{route('cordpost-pass')}}                              
+
+                              @elseif(Auth::guard('manager')->check())
+
+                              {{route('manapost-pass')}}                              
+
+                              @elseif(Auth::guard('faculty')->check())
+
+                              {{route('facupost-pass')}}
+
+                              @endif
+
+
+                             
+
+
+                             ">
                                  @csrf
                                       
                                                       <!-- ==================================VALIDATION ERRORS================================== -->

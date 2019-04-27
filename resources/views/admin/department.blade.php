@@ -25,7 +25,7 @@
 
                    
 
-    <div class="row">
+    <div class="">
 
       
       
@@ -95,41 +95,8 @@
 
 
 
-{{-- <div id="myModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title" id="myModalLabel">Academic year</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                </div>
-                                                <div class="modal-body" >
-                                                  
-                                                <form role="form" method="post" action="{{route('post-department')}}">
 
-                                                  @csrf
-                                                  <div class="card-body">
-                                                    <div class="form-group">
-                                                      <label for="exampleInputEmail1">Add Department</label>
-                                                      <input type="text" class="form-control" id="year" name="name" placeholder="EEE" >
-                                                    </div>
-                                                   
-
-                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</button>
-                                          <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add {{$title}}</button>
-                                                    </div>
-                                                 
-                                              
-                                              </div>
-                                              <!-- /.card -->
-                                        </div>
-                                        
-                                         </form>
-                                                    
-                                              
-                                            </div><!-- /.modal-content -->
-                                        </div><!-- /.modal-dialog -->
-                                    </div>
-                    --}}
+                     </div>
 @endsection
 
 

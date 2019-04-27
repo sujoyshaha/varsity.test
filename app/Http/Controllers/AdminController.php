@@ -11,6 +11,9 @@ use App\Department;
 use App\Article;
 use App\ArtImg;
 use App\Student;
+use App\Manager;
+use App\Coordinator;
+use App\Faculty;
 use App\ConPhoto;
 use App\Comment;
 use Illuminate\Support\Facades\Cookie;
@@ -36,11 +39,92 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
+
+
     {
 
-        return view('backend.admin-dashboard',['title' => 'Academic Year']);
+         $data['title'] ="Dashboard";
+
+
+           
+
+        if ($request->academic_year) {
+
+        $this->validate($request,[
+            'academic_year' => 'required|exists:academic_years,id',
+        ]);
+
+       
+}
+       
+            $cay = AcademicYear::whereYear('opening_date', '=', date('Y'))->first();
+        
+        
+      
+        $data['ays'] = AcademicYear::orderBy('id', 'desc')->get();
+        $data['deps'] = Department::all();
+        // $data['cons'] = Contribution::whereStatus(1)->orderBy('id', 'asc')->paginate(10);
+        // $data['allcons'] = Article::whereYear($cay->id)->get()->count();
+        $data['withcom'] = Article::whereIn('file_status',[2,4])->count();
+        $data['nocom'] = Article::whereNotIn('file_status',[2,4])->count();
+
+        
+        // $data['nocoms'] = Article::whereYear($cay->id)->whereNotIn('status',[2,4])->where('created_at', '<=', Carbon::now()->subDays(14)->toDateTimeString())->count();
+
+
+
+
+
+        $data['totalArticles'] = Article::all()->count();
+        $data['totalDepartments'] = Department::all()->count();
+        $data['totalStudents'] = Student::all()->count();
+        $data['totalComments'] = Comment::all()->count();
+
+         
+
+        return view('admin.dashboard',$data);
     }
+
+
+    //    public function ArticleComment(Request $request)
+    // {
+    //     $data['title'] = "Contribution Without Comment";
+
+    //     $data['rptype'] = 4;
+
+    //     $uay = Cookie::get('uay');
+
+    //     if ($request->academic_year) {
+
+    //     $this->validate($request,[
+    //         'academic_year' => 'required|exists:academic_years,id',
+    //     ]);
+
+    //     Cookie::queue('uay', $request->academic_year, 300);
+
+    //      $uay = $request->academic_year;
+    //     }
+
+    //     if ($uay) {
+    //         $cay = AcademicYear::findOrFail($uay);
+    //     }else{
+    //         $cay = AcademicYear::whereYear('opening_date', '=', date('Y'))->first();
+    //     }
+    //     $data['cay'] = $cay;
+      
+    //     $data['ays'] = AcademicYear::orderBy('id', 'desc')->get();
+    //     $data['deps'] = Department::all();
+    //     // $data['cons'] = Contribution::whereStatus(1)->orderBy('id', 'asc')->paginate(10);
+    //     $data['allcons'] = Article::whereYear($cay->id)->get()->count();
+    //     $data['comcons'] = Article::whereYear($cay->id)->whereNotIn('status',[2,4])->count();
+    //     $data['nocoms'] = Article::whereYear($cay->id)->whereNotIn('status',[2,4])->where('created_at', '<=', Carbon::now()->subDays(14)->toDateTimeString())->count();
+
+
+         
+
+    //     return view('admin.dashboard', $data);
+    // }
 
 
     public function userProfile()
@@ -58,15 +142,10 @@ class AdminController extends Controller
     }
 
 
-    public function allUsers()
-    {
-        $data['title'] = "User";
-        $data['eroute'] = "edit-user";
-        $users = User::paginate(100);
-        $data['users'] =$users;
-        return view('admin.allusers', $data);
-    }
-      
+
+
+
+ 
 
 
 
@@ -88,34 +167,219 @@ class AdminController extends Controller
 
 
 
-      public function postUser( Request $request)
+//       public function postUser( Request $request)
+//     {
+//       $this->validate($request,[
+//             'first_name' => ['required', 'string', 'max:255'],
+//             // 'last_name' => ['required', 'string', 'max:255'],
+//             // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+//             // 'phone' => ['required', 'string'],
+//             // 'role' => ['required', 'numeric','max:20'],
+//             // 'password' => ['required', 'string', 'min:6', 'confirmed'],
+//         ]);
+
+// // 'password' => Hash::make($data['password']),
+      
+
+//         $adduser['first_name'] = $request->first_name;
+//         // $adduser['last_name'] = $request->last_name;
+//         // $adduser['email'] = $request->email;
+//         // $adduser['phone'] = $request->phone;
+//         // $adduser['role'] = $request->role;
+//         // $adduser['password'] = Hash::make($request->password);
+
+//         Admin::create($adduser);
+
+
+
+
+
+//         session()->flash('message', 'Admin Successfully Added!');
+//         Session::flash('type', 'success');
+//         return redirect()->back();
+//     }
+
+
+
+
+
+
+    // public function addStudent()
+    // {
+
+    //     $data['title'] ="User Profile";
+       
+    //     //$uid = Auth::user()->id;
+
+    //     // $uid = Auth::guard('admin')->user()->id;
+
+
+    //     // $data['user'] =Admin::findOrFail($uid);
+     
+    //     return view('admin.add-user',$data);
+    // }
+
+
+
+      public function editAdmin($id)
     {
-      $this->validate($request,[
+         $data['title'] = "Update User";
+         $data['uroute'] = "update-user";
+         $data['user']= Admin::findOrFail($id);
+
+         return view('admin.edit-admin',$data);
+    }
+
+
+     public function updateAdmin($id, Request $request)
+    {
+
+ $this->validate($request,[
             'first_name' => ['required', 'string', 'max:255'],
-            // 'last_name' => ['required', 'string', 'max:255'],
-            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            // 'phone' => ['required', 'string'],
-            // 'role' => ['required', 'numeric','max:20'],
-            // 'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'last_name' => ['required', 'string', 'max:255'],
+            // 'email' => 'required|unique:student,email',
+           // 'email' => 'required', 'string', 'email',
+            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:admin'],
+
+           // 'email' => ['required', 'string', 'email', 'max:255', 'unique:student'],
+            'phone' => ['required', 'string'],
+          //  'role' => ['required', 'numeric','max:20'],
+            // 'department_id' => 'required|exists:departments,id',
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
 
+        $user= Admin::findOrFail($id);
+        if ($request->email != $user->email) {
+            $this->validate($request,[
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:admin'],
+            ]);
+            $user['email'] = $request->email;
+        }
+
+ 
+
+        
 // 'password' => Hash::make($data['password']),
       
 
-        $adduser['first_name'] = $request->first_name;
-        // $adduser['last_name'] = $request->last_name;
-        // $adduser['email'] = $request->email;
-        // $adduser['phone'] = $request->phone;
-        // $adduser['role'] = $request->role;
-        // $adduser['password'] = Hash::make($request->password);
+        $user['first_name'] = $request->first_name;
+        $user['last_name'] = $request->last_name;
+        $user['phone'] = $request->phone;
+        // $addstudent['department_id'] = $request->department_id;
+       // $adduser['role'] = $request->role;
+        $user['password'] = Hash::make($request->password);
 
-        Admin::create($adduser);
-
-
+        $user->save();
 
 
 
-        session()->flash('message', 'Admin Successfully Added!');
+
+
+        session()->flash('message', 'Admin Updated Successfully :)');
+        Session::flash('type', 'success');
+        return redirect()->back();
+
+        // return view('admin.allAdmin');
+    }
+
+
+
+
+   public function allAdmin()
+    {
+        $data['title'] = "User";
+        $data['eroute'] = "edit-user";
+        $data['cns']= Admin::orderBy('id','asc')->get();
+        return view('admin.allAdmin', $data);
+    }
+      
+       public function allManager()
+    {
+        $data['title'] = "User";
+        $data['eroute'] = "edit-user";
+        // $users = Admin::paginate(100);
+
+        $data['cns']= Manager::orderBy('id','asc')->get();
+
+        // $data['users'] =$users;
+        return view('admin.allmanager', $data);
+    }
+
+
+       public function allCoordinator()
+    {
+        $data['title'] = "All Coordinator";
+        $data['eroute'] = "edit-user";
+        // $users = Admin::paginate(100);
+
+        $data['cns']= Coordinator::orderBy('id','asc')->get();
+
+        // $data['users'] =$users;
+        return view('admin.allcoordinator', $data);
+    }
+
+       public function allStudent()
+    {
+        $data['title'] = "User";
+        $data['eroute'] = "edit-user";
+        // $users = Admin::paginate(100);
+
+        $data['cns']= Student::orderBy('id','asc')->get();
+
+        // $data['users'] =$users;
+        return view('admin.allstudent', $data);
+    } 
+
+       public function allFaculty()
+    {
+        $data['title'] = "User";
+        $data['eroute'] = "edit-user";
+        // $users = Admin::paginate(100);
+
+        $data['cns']= Faculty::orderBy('id','asc')->get();
+
+        // $data['users'] =$users;
+        return view('admin.allfaculty', $data);
+    } 
+
+
+
+      public function postAdmin( Request $request)
+    {
+      $this->validate($request,[
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            // 'email' => 'required|unique:student,email',
+           // 'email' => 'required', 'string', 'email',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:student'],
+
+           // 'email' => ['required', 'string', 'email', 'max:255', 'unique:student'],
+            'phone' => ['required', 'string'],
+          //  'role' => ['required', 'numeric','max:20'],
+            'department_id' => 'required|exists:departments,id',
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+        ]);
+
+
+        
+// 'password' => Hash::make($data['password']),
+      
+
+        $addstudent['first_name'] = $request->first_name;
+        $addstudent['last_name'] = $request->last_name;
+        $addstudent['email'] = $request->email;
+        $addstudent['phone'] = $request->phone;
+        $addstudent['department_id'] = $request->department_id;
+       // $adduser['role'] = $request->role;
+        $addstudent['password'] = Hash::make($request->password);
+
+        Admin::create($addstudent);
+
+
+
+
+
+        session()->flash('message', 'Admin Created Successfully :)');
         Session::flash('type', 'success');
         return redirect()->back();
     }
@@ -123,24 +387,88 @@ class AdminController extends Controller
 
 
 
-
-
-    public function addStudent()
+      public function postManager( Request $request)
     {
+      $this->validate($request,[
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            // 'email' => 'required|unique:student,email',
+           // 'email' => 'required', 'string', 'email',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:student'],
 
-        $data['title'] ="User Profile";
-       
-        //$uid = Auth::user()->id;
+           // 'email' => ['required', 'string', 'email', 'max:255', 'unique:student'],
+            'phone' => ['required', 'string'],
+          //  'role' => ['required', 'numeric','max:20'],
+            'department_id' => 'required|exists:departments,id',
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+        ]);
 
-        // $uid = Auth::guard('admin')->user()->id;
+
+        
+// 'password' => Hash::make($data['password']),
+      
+
+        $addstudent['first_name'] = $request->first_name;
+        $addstudent['last_name'] = $request->last_name;
+        $addstudent['email'] = $request->email;
+        $addstudent['phone'] = $request->phone;
+        $addstudent['department_id'] = $request->department_id;
+       // $adduser['role'] = $request->role;
+        $addstudent['password'] = Hash::make($request->password);
+
+        Manager::create($addstudent);
 
 
-        // $data['user'] =Admin::findOrFail($uid);
-     
-        return view('admin.add-user',$data);
+
+
+
+        session()->flash('message', 'Marketing Manager Created Successfully :)');
+        Session::flash('type', 'success');
+        return redirect()->back();
     }
 
 
+
+
+      public function postCoordinator( Request $request)
+    {
+      $this->validate($request,[
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            // 'email' => 'required|unique:student,email',
+           // 'email' => 'required', 'string', 'email',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:student'],
+
+           // 'email' => ['required', 'string', 'email', 'max:255', 'unique:student'],
+            'phone' => ['required', 'string'],
+          //  'role' => ['required', 'numeric','max:20'],
+            'department_id' => 'required|exists:departments,id',
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+        ]);
+
+
+        
+// 'password' => Hash::make($data['password']),
+      
+
+        $addstudent['first_name'] = $request->first_name;
+        $addstudent['last_name'] = $request->last_name;
+        $addstudent['email'] = $request->email;
+        $addstudent['phone'] = $request->phone;
+        $addstudent['department_id'] = $request->department_id;
+       // $adduser['role'] = $request->role;
+        $addstudent['password'] = Hash::make($request->password);
+
+        Coordinator::create($addstudent);
+
+
+
+
+
+        session()->flash('message', 'Marketing Coordinator Created Successfully :)');
+        Session::flash('type', 'success');
+        return redirect()->back();
+    }
 
 
       public function postStudent( Request $request)
@@ -178,11 +506,53 @@ class AdminController extends Controller
 
 
 
-        session()->flash('message', 'Student Successfully Added!');
+        session()->flash('message', 'Student Created Successfully :)');
         Session::flash('type', 'success');
         return redirect()->back();
     }
 
+
+
+
+      public function postFaculty( Request $request)
+    {
+      $this->validate($request,[
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            // 'email' => 'required|unique:student,email',
+           // 'email' => 'required', 'string', 'email',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:student'],
+
+           // 'email' => ['required', 'string', 'email', 'max:255', 'unique:student'],
+            'phone' => ['required', 'string'],
+          //  'role' => ['required', 'numeric','max:20'],
+            'department_id' => 'required|exists:departments,id',
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+        ]);
+
+
+        
+// 'password' => Hash::make($data['password']),
+      
+
+        $addstudent['first_name'] = $request->first_name;
+        $addstudent['last_name'] = $request->last_name;
+        $addstudent['email'] = $request->email;
+        $addstudent['phone'] = $request->phone;
+        $addstudent['department_id'] = $request->department_id;
+       // $adduser['role'] = $request->role;
+        $addstudent['password'] = Hash::make($request->password);
+
+        Faculty::create($addstudent);
+
+
+
+
+
+        session()->flash('message', 'Faculty Created Successfully :)');
+        Session::flash('type', 'success');
+        return redirect()->back();
+    }
 
     
     public function postPass(Request $request)
@@ -203,7 +573,7 @@ class AdminController extends Controller
             $user->password=bcrypt(Input::get('password'));
             $user->save();
 
-            session()->flash('message', 'Password change Successfully!');
+            session()->flash('message', 'Password Successfully Changed :)');
             Session::flash('type', 'success');
             return redirect()->back();
 
@@ -211,7 +581,7 @@ class AdminController extends Controller
         else{
 
 
-        session()->flash('message', 'Password not changed!');
+        session()->flash('message', 'Password Changes Unsuccessful :(');
         Session::flash('type', 'error');
         return redirect()->back();
     }
@@ -260,7 +630,7 @@ class AdminController extends Controller
             if ($hasEmail->email == $exemail) {
                 # code...
             }else{
-                session()->flash('message', 'Email already exist with another user!');
+                session()->flash('message', 'Email exists with another user!');
                 Session::flash('type', 'error');
                 return redirect()->back();
             }
@@ -337,7 +707,7 @@ $myprofile['photo'] = $photo;
             
         $myprofile->save();
 
-        session()->flash('message', 'Your Profile Successfully updated!');
+        session()->flash('message', 'Profile Updated Successfully :)');
         Session::flash('type', 'success');
         return redirect()->back();
 
@@ -357,7 +727,9 @@ $myprofile['photo'] = $photo;
     public function postAcademicYear( Request $request)
     {
       $this->validate($request,[
-            'year' => 'required|numeric|max:2999|min:2019',
+            'year' => 'required|numeric|max:2999|min:2019|unique:academic_years,year',
+
+
             'opening_date' => 'required|date',
             'closing_date' => 'required|date',
             'final_date' => 'required|date',
@@ -369,7 +741,7 @@ $myprofile['photo'] = $photo;
         $differ = $cartd->diffInDays($request->opening_date, false);
 
         if ($differ < 0) {
-        session()->flash('message', 'Start time can not be older than today!');
+        session()->flash('message', 'The opening date need to start from today');
         Session::flash('type', 'error');
         return redirect()->back();
         }
@@ -378,7 +750,7 @@ $myprofile['photo'] = $photo;
         $cdiff = $od->diffInDays($request->closing_date, false);
 
         if ($cdiff < 1) {
-        session()->flash('message', 'The closing date can not be older than opening date!');
+        session()->flash('message', 'The closing date should be after opening date!');
         Session::flash('type', 'error');
         return redirect()->back();
         }
@@ -387,7 +759,7 @@ $myprofile['photo'] = $photo;
         $fdiff = $cd->diffInDays($request->final_date, false);
 
         if ($fdiff < 1) {
-        session()->flash('message', 'The final date can not be older than closing date!');
+        session()->flash('message', 'The final date should be before closing date!');
         Session::flash('type', 'error');
         return redirect()->back();
         }
@@ -405,7 +777,7 @@ $myprofile['photo'] = $photo;
 
 
 
-        session()->flash('message', 'Academic Year Successfully Added!');
+        session()->flash('message', 'Academic Year Added Successfully :)');
         Session::flash('type', 'success');
         return redirect()->back();
     }
@@ -451,7 +823,7 @@ $myprofile['photo'] = $photo;
             $differ = $cartd->diffInDays($request->opening_date, false);
 
             if ($differ < 0) {
-            session()->flash('message', 'Starting date can not be changed to older dates!');
+            session()->flash('message', 'Starting date can not be a an older date than today');
             Session::flash('type', 'error');
             return redirect()->back();
             }
@@ -460,7 +832,7 @@ $myprofile['photo'] = $photo;
             $cdiff = $od->diffInDays($request->closing_date, false);
 
             if ($cdiff < 1 && $acayear->closing_date ==$request->closing_date) {
-            session()->flash('message', 'Opening date can not be later than the closing date!');
+            session()->flash('message', ' The Opening date should be before closing date!');
             Session::flash('type', 'error');
             return redirect()->back();
             }
@@ -472,7 +844,7 @@ $myprofile['photo'] = $photo;
             $cdiff = $od->diffInDays($request->closing_date, false);
 
             if ($cdiff < 1) {
-            session()->flash('message', 'Closing date can not be changed to older dates!');
+            session()->flash('message', 'Closing date can not be changed to an older date!');
             Session::flash('type', 'error');
             return redirect()->back();
             }
@@ -481,7 +853,7 @@ $myprofile['photo'] = $photo;
             $fdiff = $cd->diffInDays($acayear->final_date, false);
 
             if ($fdiff < 1 && $acayear->final_date == $request->final_date) {
-            session()->flash('message', 'The Closing date can not be changed to later than the final date!');
+            session()->flash('message', 'The Closing date can not be changed after the final date!');
             Session::flash('type', 'error');
             return redirect()->back();
             }
@@ -507,7 +879,7 @@ $myprofile['photo'] = $photo;
         $acayear->save();
 
 
-        session()->flash('message', 'Academic Year Successfully updated!');
+        session()->flash('message', 'Academic Year updated Successfully :)');
         Session::flash('type', 'success');
         return redirect()->back();
     }
@@ -544,6 +916,7 @@ $myprofile['photo'] = $photo;
     {
       $this->validate($request,[
             'name' => 'required',
+
         ]);
 
 
@@ -555,7 +928,7 @@ $myprofile['photo'] = $photo;
 
 
 
-        session()->flash('message', 'Department Successfully Added!');
+        session()->flash('message', 'Department Created Successfully :)');
         Session::flash('type', 'success');
         return redirect()->back();
     }
@@ -587,7 +960,7 @@ $myprofile['photo'] = $photo;
         $dp->save();
 
 
-        session()->flash('message', 'Academic Year Successfully updated!');
+        session()->flash('message', 'Academic Year Created Successfully :)');
         Session::flash('type', 'success');
         return redirect()->back();
     }
@@ -619,8 +992,35 @@ $myprofile['photo'] = $photo;
 
 
 
+  // public function deleteArticle($id)
+  //   {
 
-    public function getArticle(Request $request)
+  //      $artDel = Article::findOrFail($id);
+
+  //      $artdel->delete();
+     
+  //       return redirect()->back();
+  //   }
+
+
+     public function deleteArticle($id) {
+
+
+        $article = Article::findOrFail($id);
+
+       
+       
+        $article->delete();
+
+        session()->flash('message', 'Article SuccessFully Delete!');
+        Session::flash('type', 'error');
+
+        return redirect()->back();
+
+    }
+
+
+    public function getAdminArticles(Request $request)
     {
         $data['title'] = "Contribution";
         $data['route'] = "post-contribution";
@@ -632,40 +1032,22 @@ $myprofile['photo'] = $photo;
         // $uay = Cookie::get('uay');
         // $uay = Cookie::get('uay');
 
+        $data['cns']= Article::orderBy('id','asc')->get();
+
         if ($request->year) {
 
-        $this->validate($request,[
-            'year' => 'required|exists:academic_years,year',
-        ]);
-
-        $nray = AcademicYear::where('year',$request->year)->first();
-
-        // $uay = $nray->id;
-
-        // Cookie::queue('uay', $uay, 300);
-
-         
+            $this->validate($request,[
+                'year' => 'required|exists:academic_years,year',
+            ]);
+            $data['cns']= Article::where('year',$request->year)->orderBy('id','desc')->get();
+             $data['selectedYear'] = $request->year;
         }
 
-        $data['cns']= Article::orderBy('id','asc')->get();
+
+
+        
         $data['acys'] = AcademicYear::orderBy('id', 'desc')->get();
-
-        // if ($uay) {
-        //     $cay = AcademicYear::findOrFail($uay);
-        // }else{
-        //     $cay = AcademicYear::whereYear('opening_date', '=', date('Y'))->first();
-        // }
-
-
-        // $data['cay'] = $cay;
-        // $data['cons'] = Contribution::whereAcademicYear($cay->id)->orderBy('id', 'asc')->paginate(10);
-        // $data['allcons'] = Contribution::whereAcademicYear($cay->id)->get()->count();
-        // $data['comcons'] = Contribution::whereAcademicYear($cay->id)->whereIn('status',[2,4])->count();
-        // $data['apvcons'] = Contribution::whereAcademicYear($cay->id)->whereIn('status',[3,4])->count();
-        // $data['pencons'] = Contribution::whereAcademicYear($cay->id)->whereNotIn('status',[3,4])->count();
-
-
-
+       
 
 
         return view('admin.admin-article', $data);
@@ -673,68 +1055,38 @@ $myprofile['photo'] = $photo;
 
 
 
-    // public function getArticle(Request $request)
+
+    // public function ArticleComment(Request $request)
     // {
-    //     $data['title'] = "Article";
-    //     $data['route'] = "post-article";
-    //     $data['eroute'] = "edit-article";
-    //     $data['sroute'] = "single-article";
-    //     $data['aroute'] = "approve-article";
-      
-        
-    //     // $uay = Cookie::get('uay');
-       
+    //     $data['title'] = "Contribution Without Comment";
 
-    //     $data['acys'] = AcademicYear::orderBy('id', 'desc')->get();
+    //     $data['rptype'] = 4;
+        
+
+    //     // if ($request->academic_year) {
+
+    //     // $this->validate($request,[
+    //     //     'academic_year' => 'required|exists:academic_years,id',
+    //     // ]);
 
         
+    //     // }
+
+        
+
     //     $cay = AcademicYear::whereYear('opening_date', '=', date('Y'))->first();
     //     $data['cay'] = $cay;
-    //     $data['cns'] = Article::where('year',$cay->year)->orderBy('id', 'asc')->paginate(10);
+      
+    //     $data['ays'] = AcademicYear::orderBy('id', 'desc')->get();
+    //     $data['deps'] = Department::all();
+    //     // $data['cons'] = Contribution::whereStatus(1)->orderBy('id', 'asc')->paginate(10);
+    //     $data['allcons'] = Article::whereYear($cay->id)->get()->count();
+    //     $data['comcons'] = Article::whereNotIn('file_status',[2,4])->count();
+    //     $data['nocoms'] = Article::whereYear($cay->id)->whereNotIn('file_status',[2,4])->where('created_at', '<=', Carbon::now()->subDays(14)->toDateTimeString())->count();
 
-    //     return view('admin.admin-article', $data);
+    //     return view('admin.dashboard', $data);
     // }
 
-
-
-
-
- // public function ApproveArticle(Request $request){
-
- //        $this->validate($request,[
- //            'id' => 'required',
- //            'id.*' => 'numeric|exists:articles,id',
- //        ]);
-
- //        $ids = $request->id;
-
- //    foreach ($ids as $id) {
-            
-       
-
- //        $con = Article::findOrFail($id);
-
- //        if ($con->file_status == 1) {
- //            $con->file_status = 3;
-
- //            $con->save();
- //        }elseif ($con->file_status == 2) {
- //            $con->file_status = 4;
- //            $con->save();
- //        }elseif ($con->file_status == 3 || $con->file_status == 4 ) {
-            
- //        }else{
- //        session()->flash('message', ' One or more Contribution is already approved or something went wrong with it!');
- //        Session::flash('type', 'warning');
- //        return redirect()->back();
- //        }
-
- //    }
- //        session()->flash('message', 'Contribution(s) status Successfully updated!');
- //        Session::flash('type', 'success');
- //        return redirect()->back();
-  
- //    }
 
 
 
@@ -754,12 +1106,12 @@ $myprofile['photo'] = $photo;
             $con->file_status = 4;
             $con->save();
         }else{
-        session()->flash('message', 'Article is already approved or something went wrong!');
+        session()->flash('message', 'This Article already approved!');
         Session::flash('type', 'warning');
         return redirect()->back();
         }
 
-        session()->flash('message', 'Article file_status Successfully updated!');
+        session()->flash('message', 'Article Status  updated Successfully :)');
         Session::flash('type', 'success');
         return redirect()->back();
         
@@ -930,15 +1282,15 @@ $myprofile['photo'] = $photo;
         }elseif ($con->file_status == 3) {
             $con->file_status = 4;
             $con->save();
-        }elseif ($con->file_status == 3 || $con->file_status == 4 ) {
-            # Do nothing...
+        }elseif ($con->file_status == 2 || $con->file_status == 4 ) {
+            
         }else{
-        session()->flash('message', 'Something went wrong with your update please contact the server admin!');
+        session()->flash('message', 'Something happened wrong!');
         Session::flash('type', 'warning');
         return redirect()->back();
         }
 
-        session()->flash('message', 'Comment Successfully Added!');
+        session()->flash('message', 'Comment  Created Successfully :)');
         Session::flash('type', 'success');
 
 
@@ -1004,7 +1356,7 @@ $myprofile['photo'] = $photo;
 
 
 
-    public function getArticleReport(Request $request)
+    public function getArticlePercentage(Request $request)
     {
 
 
@@ -1060,10 +1412,80 @@ $myprofile['photo'] = $photo;
         // $reps = Contribution::with('user')->get()->groupBy('user.department_id');
         $data['ays'] = AcademicYear::orderBy('id', 'desc')->get();
         $data['deps'] = Department::all();
+        $data['articles'] = Article::all();
 
 
-        return view('admin.reports', $data);
+        return view('admin.percentage-of-articles', $data);
     }
+
+
+
+    public function getArticleNumbers(Request $request)
+    {
+
+
+
+
+
+
+        $data['title'] = "Number of Articles";
+
+        //$uay = Cookie::get('uay');
+
+        if ($request->academic_year) {
+
+        $this->validate($request,[
+            'academic_year' => 'required|exists:academic_years,id',
+        ]);
+
+       // Cookie::queue('uay', $request->academic_year, 300);
+
+         //$uay = $request->academic_year;
+        }
+
+        
+        $data['rptype'] = 1;
+
+
+
+       
+
+        // if ($uay) {
+        //     $cay = AcademicYear::findOrFail($uay);
+        // }else{
+            $cay = AcademicYear::whereYear('opening_date', '=', date('Y'))->first();
+       // }
+        $data['cay'] = $cay;
+
+          // $data['reps'] = Article::whereAcademicYear($cay->id)->with('user')->get()->groupBy('user.department_id');
+
+         $data['reps'] = Article::where('year',$cay->year)->get()->groupBy('dep_id');
+
+
+            // $data['reps'] = Article::whereYear('year',$cay->id)->with('student')->get()->groupBy('student.dep_id');
+
+        // DB::table('users')->where('name', 'John')->value('email');
+
+        // $data['reps'] = Article::where('year',$cay->year)->get()->groupBy('student.dep_id');
+        
+        // dd($data);
+
+
+
+
+        // $reps = Contribution::with('user')->get()->groupBy('user.department_id');
+        $data['ays'] = AcademicYear::orderBy('id', 'desc')->get();
+        $data['deps'] = Department::all();
+        $data['articles'] = Article::all();
+
+
+        return view('admin.number-of-articles', $data);
+    }
+
+
+
+
+    
 
 
 
