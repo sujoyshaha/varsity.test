@@ -95,33 +95,37 @@
                                 @if(Auth::guard('admin')->check())
                                 <!-- item-->
                                 <a href="{{route('user-profile')}}" class="dropdown-item notify-item">
-                                    <i class="dripicons-user"></i> <span>My Account</span>
+                                    <i class="dripicons-user"></i> <span>My Profile</span>
                                 </a> 
 
                                 @elseif(Auth::guard('student')->check())
 
                                 <a href="{{route('student-profile')}}" class="dropdown-item notify-item">
-                                    <i class="dripicons-user"></i> <span>My Account</span>
+                                    <i class="dripicons-user"></i> <span>My Profile</span>
+                                </a>                                
+
+                                @elseif(Auth::guard('coordinator')->check())
+
+                                <a href="{{route('coordinator-profile')}}" class="dropdown-item notify-item">
+                                    <i class="dripicons-user"></i> <span>My Profile</span>
+                                </a>                                
+
+                                @elseif(Auth::guard('manager')->check())
+
+
+                                <a href="{{route('manager-profile')}}" class="dropdown-item notify-item">
+                                    <i class="dripicons-user"></i> <span>My Profile</span>
+                                </a>                                
+
+                                @elseif(Auth::guard('faculty')->check())
+
+                                <a href="{{route('faculty-profile')}}" class="dropdown-item notify-item">
+                                    <i class="dripicons-user"></i> <span>My Profile</span>
                                 </a>
 
                                 @endif
     
-                                <!-- item-->
-                               {{--  <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <i class="dripicons-gear"></i> <span>Settings</span>
-                                </a>
-    
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <i class="dripicons-help"></i> <span>Support</span>
-                                </a>
-    
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <i class="dripicons-lock"></i> <span>Lock Screen</span>
-                                </a> --}}
-    
-                                <!-- item-->
+                              
 
                                 <a class="dropdown-item notify-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -147,7 +151,43 @@
     
                     <ul class="list-unstyled menu-left mb-0">
                         <li class="float-left">
-                            <a href="index.html" class="logo">
+                            <a 
+
+
+                              @if(Auth::guard('admin')->check())
+
+                              href="{{route('dashboard')}}" 
+
+
+                              @elseif(Auth::guard('coordinator')->check())
+
+                              href="{{route('cord-dashboard')}}"
+
+                              @elseif(Auth::guard('manager')->check())
+
+                              href="{{route('manager-dashboard')}}"
+
+
+                              @elseif(Auth::guard('student')->check())
+
+                              href="{{route('student-dashboard')}}"
+
+
+                              @elseif(Auth::guard('faculty')->check())
+
+                              href="{{route('faculty-dashboard')}}"
+
+
+                              @endif
+
+
+
+                            
+
+
+
+
+                            class="logo">
                                 <span class="logo-lg">
 
 

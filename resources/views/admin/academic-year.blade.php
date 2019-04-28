@@ -109,7 +109,9 @@
                                  {{ $fdiff }} days
                                 </span></td>
 
-                            <td><a href="{{route($eroute, $ay->id)}}" class="btn btn-primary w-md"><i class="mdi mdi-square-edit-outline"></i> <span> Edit</span></a></td>
+                            <td><a href="{{route('edit-academic-year', $ay->id)}}" class="btn btn-primary w-md"><i class="mdi mdi-square-edit-outline"></i> <span> Edit</span></a>
+
+                              <a href="{{route('delete-acyear', $ay->id)}}" class="btn btn-danger w-md"><i class=" mdi mdi-delete"></i> <span> Delete</span></a></td>
                           </tr>
 
                         @endforeach

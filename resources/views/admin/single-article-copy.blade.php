@@ -24,7 +24,7 @@
     <style>
 .artcontainer {
   position: relative;
-  width: 50%;
+
 }
 
 .artcontainer .image {
@@ -55,12 +55,7 @@
   opacity: 1;
 }
 
-.artcontainer.text {
-  background-color: #4CAF50;
-  color: white;
-  font-size: 16px;
-  padding: 16px 32px;
-}
+
 </style>
 
 @endsection
@@ -115,108 +110,69 @@
 
                 <h4 class="header-title">Article Photos</h4>
 
+                
 
                 @foreach($artimgs as $ai)
+
+                <div class="artcontainer" style="width:30%; ">
+
                     @if($ai->photo)
 
-                    <a href="{{asset('upload/' .$ai->photo)}}">
-                        <img src="{{asset('upload/' .$ai->photo)}}" class="avatar  img-thumbnail" alt="avatar" style="width: 30%;margin-right: 10px;"> </a>
+                    
+                        <img src="{{asset('upload/' .$ai->photo)}}" class="image avatar  img-thumbnail" alt="avatar " style="width: 30%;margin-right: 10px;"> 
+
+
+                        </a>
+
+                                        <div class="middle">
+    <div class="text">
+        <a class="btn btn-primary w-md" href="{{ asset('upload/'.$con->file_name) }}"><i class=" mdi mdi-cloud-download"></i><span> DOWNLOAD</span></a>
+
+    </div>
+  
+
+                </div>
+
                     @else
                         <img src="{{asset('assets/images/no-image.png')}}" class="avatar  img-thumbnail" alt="avatar">
                     @endif
-                @endforeach
+                
 
+
+  
+
+
+
+           
+            </div><!-- end card-box-->
+            </div><!-- end card-box-->
+
+@endforeach
 
 
             </div><!-- end card-box-->
 
             <!-- end card-box-->
 
+</div>
 
 
-
-            <div class="card-box">
+                       <div class="card-box">
 
                 <h4 class="header-title">Article Files </h4>
 
+                <div class="artcontainer" style="width: 30%">
+  <img src="{{asset('assets/images/document-management-big.png')}}" alt="Avatar" class="image" >
+  <div class="middle">
+    <div class="text"><a class="btn btn-primary w-md" href="{{ asset('upload/'.$con->file_name) }}"><i class=" mdi mdi-cloud-download"></i><span> DOWNLOAD</span></a></div>
+  </div>
+</div>
 
 
-                            @if(Auth::guard('admin')->check())
+       {{--      <a href="{{ asset('upload/'.$con->file_name) }}"> <img src="{{asset('assets/images/document-management-big.png')}}" class="avatar  img-thumbnail" alt="avatar" style="width: 30%;margin-right: 10px;"> </a> --}}
 
 
-
-                                <div class="artcontainer" style="width: 30%">
-                                <img src="{{asset('assets/images/document-management-big.png')}}" alt="Avatar" class="image" >
-                                  <div class="middle">
-                            <div class="text"><a class="btn btn-primary w-md" href="{{ asset('upload/'.$con->file_name) }}"><i class=" mdi mdi-cloud-download"></i><span> DOWNLOAD</span></a></div>
-                                  </div>
-                                </div>
-
-                     
-
-
-                              @elseif(Auth::guard('coordinator')->check())
-
-                                <div class="artcontainer" style="width: 30%">
-                                        <img src="{{asset('assets/images/document-management-big.png')}}" alt="Avatar" class="image" >
-                                          <div class="middle">
-                                            <div class="text"><a class="btn btn-primary w-md" href="{{ asset('upload/'.$con->file_name) }}"><i class=" mdi mdi-cloud-download"></i><span> DOWNLOAD</span></a></div>
-                                          </div>
-                                </div>
-
-                                                    
-
-                              @elseif(Auth::guard('manager')->check())
-
-
-
-                                <div class="artcontainer" style="width: 30%">
-                                        <img src="{{asset('assets/images/document-management-big.png')}}" alt="Avatar" class="image" >
-                                          <div class="middle">
-                                            <div class="text"><a class="btn btn-primary w-md" href="{{ asset('upload/'.$con->file_name) }}"><i class=" mdi mdi-cloud-download"></i><span> DOWNLOAD</span></a></div>
-                                          </div>
-                                </div>
-
-                            
-
-
-                              @elseif(Auth::guard('student')->check())
-
-
-                                <div class="artcontainer" style="width: 30%">
-                                        <img src="{{asset('assets/images/document-management-big.png')}}" alt="Avatar" class="image" >
-                                          <div class="middle">
-                                            <div class="text"><a class="btn btn-primary w-md" href="{{ asset('upload/'.$con->file_name) }}"><i class=" mdi mdi-cloud-download"></i><span> DOWNLOAD</span></a></div>
-                                          </div>
-                                </div>
-
-                            
-                            
-
-
-                              @elseif(Auth::guard('faculty')->check())
-
-
-                                <div class="artcontainer" style="width: 30%">
-                                        <img src="{{asset('assets/images/document-management-big.png')}}" alt="Avatar" class="image" >
-                                         
-                                </div>
-
-                            
-                            
-
-
-                              @endif
-
-
-
-
-
-
-
-
-       
-
+                
 
             </div><!-- end card-box-->
 

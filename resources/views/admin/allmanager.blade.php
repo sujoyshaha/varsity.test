@@ -74,7 +74,8 @@
                             {{-- <td class="align-middle">{{ $cn->dep->name }}</td> --}}
                           
                             <td>
-                                <a href="{{ route('edit-admin',$cn->id) }}" class="btn btn-block btn-primary btn-sm">Edit</a> 
+                                <a href="{{ route('edit-admin',$cn->id) }}" class="btn  btn-primary btn-sm">Edit</a>
+                                <a href="{{route('delete-manager', $cn->id)}}" class="btn btn-danger btn-sm"><i class=" mdi mdi-delete"></i> <span> Delete</span></a> 
                                 {{-- <a data-href="{{ route($droute,$post->id) }}" class="cat-delete text-danger"> Delete</a> --}}
                             </td>
                           </tr>

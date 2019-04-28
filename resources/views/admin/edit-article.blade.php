@@ -73,7 +73,7 @@
 
 
                                                    {{--  <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</button> --}}
-                                                    <a href="{{ route('articles') }}"class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</a>
+                                                    <a href="{{ route('studentarticles') }}"class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancle</a>
                                           <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i> Update {{$title}}</button>
                                                     </div>
                                                  

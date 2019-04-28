@@ -48,13 +48,25 @@ Route::post('add-academic-year', 'AdminController@postAcademicYear')->name('post
 Route::get('edit-academic-year/{id}', 'AdminController@editAcademicYear')->name('edit-academic-year');
 Route::post('update-academic-year/{id}', 'AdminController@updateAcademicYear')->name('update-academic-year');
 
+Route::get('delete-acyear/{id}', 'AdminController@deleteAcyear')->name('delete-acyear');
+
+
+
 
 // Admin User
 Route::get('allusers', 'AdminController@allUsers')->name('allusers');
 Route::get('add-user', 'AdminController@addUser')->name('add-user');
 Route::post('add-user', 'AdminController@postUser')->name('post-user');
-// Route::get('edit-user/{id}', 'AdminController@editUser')->name('edit-user');
-// Route::post('update-user/{id}', 'AdminController@updateUser')->name('update-user');
+
+Route::get('delete-admin/{id}', 'AdminController@deleteAdmin')->name('delete-admin');
+Route::get('delete-manager/{id}', 'AdminController@deleteManager')->name('delete-manager');
+Route::get('delete-coordinator/{id}', 'AdminController@deleteCoordinator')->name('delete-coordinator');
+Route::get('delete-faculty/{id}', 'AdminController@deleteFaculty')->name('delete-faculty');
+Route::get('delete-student/{id}', 'AdminController@deleteStudent')->name('delete-student');
+
+
+
+
 
 
 
@@ -108,6 +120,7 @@ Route::get('add-department', 'AdminController@addDepartment')->name('add-departm
 Route::post('add-department', 'AdminController@postDepartment')->name('post-department');
 Route::get('edit-department/{id}', 'AdminController@editDepartment')->name('edit-department');
 Route::post('update-department/{id}', 'AdminController@updateDepartment')->name('update-department');
+Route::get('delete-department/{id}', 'AdminController@deleteDepartment')->name('delete-department');
 
 
 

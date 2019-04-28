@@ -1012,12 +1012,126 @@ $myprofile['photo'] = $photo;
        
         $article->delete();
 
-        session()->flash('message', 'Article SuccessFully Delete!');
+        session()->flash('message', 'Article SuccessFully Deleted!');
         Session::flash('type', 'error');
 
         return redirect()->back();
 
     }
+
+
+
+        public function deleteAcyear($id) {
+
+
+        $article = AcademicYear::findOrFail($id);
+
+       
+       
+        $article->delete();
+
+        session()->flash('message', 'Academic Year SuccessFully Deleted !');
+        Session::flash('type', 'error');
+
+        return redirect()->back();
+
+    }
+
+
+    public function deleteDepartment($id) {
+
+
+        $article = Department::findOrFail($id);
+
+       
+       
+        $article->delete();
+
+        session()->flash('message', 'Department SuccessFully Deleted !');
+        Session::flash('type', 'error');
+
+        return redirect()->back();
+
+    }
+
+
+
+    public function deleteAdmin($id) {
+
+
+        $article = Admin::findOrFail($id);
+
+       
+       
+        $article->delete();
+
+        session()->flash('message', 'Admin SuccessFully Deleted !');
+        Session::flash('type', 'error');
+
+        return redirect()->back();
+
+    }
+    public function deleteManager($id) {
+
+
+        $article = Manager::findOrFail($id);
+
+       
+       
+        $article->delete();
+
+        session()->flash('message', 'Manager SuccessFully Deleted !');
+        Session::flash('type', 'error');
+
+        return redirect()->back();
+
+    }
+    public function deleteCoordinator($id) {
+
+
+        $article = Coordinator::findOrFail($id);
+
+       
+       
+        $article->delete();
+
+        session()->flash('message', 'Coordinator SuccessFully Deleted !');
+        Session::flash('type', 'error');
+
+        return redirect()->back();
+
+    }
+    public function deleteFaculty($id) {
+
+
+        $article = Faculty::findOrFail($id);
+
+       
+       
+        $article->delete();
+
+        session()->flash('message', 'Faculty SuccessFully Deleted !');
+        Session::flash('type', 'error');
+
+        return redirect()->back();
+
+    }
+    public function deleteStudent($id) {
+
+
+        $article = Student::findOrFail($id);
+
+       
+       
+        $article->delete();
+
+        session()->flash('message', 'Student SuccessFully Deleted !');
+        Session::flash('type', 'error');
+
+        return redirect()->back();
+
+    }
+
 
 
     public function getAdminArticles(Request $request)

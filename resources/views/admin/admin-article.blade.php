@@ -14,6 +14,10 @@
    
 }
 
+.card-footer {
+    padding: 1rem 0;
+    
+}
 
 </style>
       
@@ -253,19 +257,41 @@
                                    {{--  {{$cns}} --}}
 
 
+                                   @if(Auth::guard('admin')->check())
+
+
+                                        <div class="card-footer clearfix " style="text-align: right;">
+                                         
+                                          <button type="submit" class="btn btn-primary w-md" id="approvebtn"><i class=" mdi mdi-cloud-download"> </i> Download Selected Articles</button>
+                             
+                                        </div>
 
 
 
 
-            <div class="card-footer clearfix">
-             
-                <button type="submit" class="btn btn-success btn-sm" id="approvebtn" {{-- disabled="" --}}>Approve Selected Contributions</button>
 
-               
-                 
+                                   @elseif(Auth::guard('manager')->check())
 
-           
-            </div>
+                                    <div class="card-footer clearfix " style="text-align: right;">
+
+
+
+                                      <button type="submit" class="btn btn-primary w-md" id="approvebtn"><i class=" mdi mdi-cloud-download"> </i> Download Selected Articles</button>
+                             
+                                        </div>
+
+
+
+
+                                   @endif
+
+
+
+
+
+
+
+
         
           </form>
 

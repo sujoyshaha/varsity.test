@@ -303,7 +303,7 @@ $myprofile['photo'] = $photo;
         $dep_id = Auth::guard('manager')->user()->department_id;
 
 
-        $data['cns']= Article::whereDepId($dep_id)->orderBy('id','asc')->get();
+        $data['cns']= Article::orderBy('id','asc')->get();
 
 
         
@@ -317,7 +317,7 @@ $myprofile['photo'] = $photo;
             ]);
             // $data['cns']= Article::where('year',$request->year)->orderBy('id','desc')->get();
 
-            $data['cns']= Article::whereDepId($dep_id)->where('year',$request->year)->orderBy('id','asc')->get();
+            $data['cns']= Article::where('year',$request->year)->orderBy('id','asc')->get();
              $data['selectedYear'] = $request->year;
         }
 

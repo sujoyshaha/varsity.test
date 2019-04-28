@@ -69,7 +69,7 @@
                     </div>
 
                      <div class="form-group">
-                        <label for="exampleInputPassword1"><input type="checkbox" id="checkme" /> Agree to Terms and Conditions </label>
+                        <label> <input  type="checkbox" id="checkme" /> Agree to Terms and Conditions </label>
 
 
 
