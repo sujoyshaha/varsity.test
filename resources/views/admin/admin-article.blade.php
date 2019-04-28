@@ -262,7 +262,7 @@
 
                                         <div class="card-footer clearfix " style="text-align: right;">
                                          
-                                          <button type="submit" class="btn btn-primary w-md" id="approvebtn"><i class=" mdi mdi-cloud-download"> </i> Download Selected Articles</button>
+                                         <a href="{{ route('download-approved') }}" class="btn btn-primary w-md" id="approvebtn"><i class=" mdi mdi-cloud-download"> </i> Download Selected Articles</a>
                              
                                         </div>
 
@@ -276,7 +276,7 @@
 
 
 
-                                      <button type="submit" class="btn btn-primary w-md" id="approvebtn"><i class=" mdi mdi-cloud-download"> </i> Download Selected Articles</button>
+                                      <a href="{{ route('mandownload-approved') }}" class="btn btn-primary w-md" id="approvebtn"><i class=" mdi mdi-cloud-download"> </i> Download Selected Articles</a>
                              
                                         </div>
 

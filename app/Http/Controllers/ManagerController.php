@@ -9,7 +9,6 @@ use Carbon\Carbon;
 use App\AcademicYear;
 use App\Department;
 use App\Comment;
-use App\Contribution;
 use App\Student;
 use App\Manager;
 use App\ConPhoto;
@@ -24,7 +23,10 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 // use App\ConPhoto;
 use App\ArtImg;
-
+use Illuminate\Support\Facades\File;
+use App\Admin;
+use App\Coordinator;
+use App\Faculty;
 
 
 class ManagerController extends Controller
@@ -681,5 +683,41 @@ $myprofile['photo'] = $photo;
         // session()->flash('message', 'Academic Year Successfully updated!');
         // Session::flash('type', 'success');
         // return redirect()->back();
+    }
+
+
+        public function zipmanDownload()
+    {
+        // Storage::delete('public/test.zip');
+
+        // File::delete('approved.zip');
+
+
+        $zip = Zip::create(public_path('approved.zip'));
+
+        // using array as parameter
+        $arts = Article::where('file_status', '>', 2)->get();
+        // $arts = Article::all();
+
+        // dd($arts);
+        foreach ($arts as $art) {
+           $zip->add(public_path('upload/'.$art->file_name));
+        }
+        // $files = ' ';
+        // foreach ($arts as $art) {
+        //    $files .= (public_path('upload/'.$art->file_name)).', ';
+        // }
+
+
+
+        // $zip->add( array($files));
+        $zip->close();
+
+        // $zip->add('/path/to/my/file');
+
+        // $files = glob('upload/');
+
+
+        return redirect('approved.zip');
     }
 }

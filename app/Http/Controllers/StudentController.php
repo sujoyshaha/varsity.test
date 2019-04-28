@@ -336,67 +336,6 @@ $myprofile['photo'] = $photo;
 
 
 
-    // public function postArticle( Request $request)
-    // {
-    //   $this->validate($request,[
-    //         'title' => 'required',
-    //         'year' => 'required|exists:academic_years,year',
-    //         'doc' => 'required|file|mimes:doc,docx,pdf|max:5120',
-    //         'file' => 'required',
-    //         'file.*' => 'image|mimes:jpeg,png,svg,jpg,gif|max:2048',
-    //     ]);
-
-
-    //     $cn['title'] = $request->title;
-    //     $cn['year'] = $request->year;
-    //     $cn['file_name'] = $request->doc->getClientOriginalName();
-    //     $request->doc->store('public/upload');
-    //     // $cn['std_id'] = $request->title;
-
-    //     $files = $request->file('file');
-
-    //     $cn = Article::create($cn);
-    //     $lcn = $cn->id;
-
-    //     foreach ($files as $file) {
-    //          $img['con_id'] = $lcn;
-    //          $img['name'] = $file->getClientOriginalName();
-    //          $file->store('public/upload');
-    //            ConPhoto::create($img);
-    //      } 
-
-      
-
-
-
-
-
-    //     session()->flash('message', 'Article Successfully Added!');
-    //     Session::flash('type', 'success');
-    //     return redirect()->back();
-    // }
-
-    // //   public function editArticle($id)
-    // // {
-    // //      $data['title'] = "Update Article";
-    // //      $data['uroute'] = "update-article";
-    // //      $data['cn']= Article::findOrFail($id);
-    // //        $data['acys']= AcademicYear::orderBy('id','asc')->get();
-
-    // //      return view('admin.edit-article',$data);
-    // // }
-
-
-    // //   public function editArticle($id)
-    // // {
-    // //      $data['title'] = "Update Article";
-    // //      $data['uroute'] = "update-article";
-    // //      $data['cn']= Article::findOrFail($id);
-    // //        $data['acys']= AcademicYear::orderBy('id','asc')->get();
-
-    // //      return view('admin.edit-article',$data);
-    // // }
-
 
     public function postArticle(Request $request)
     {
@@ -406,7 +345,7 @@ $myprofile['photo'] = $photo;
         $this->validate($request,[
             'title' => 'required|string|max:255',
             'year' => 'required',
-            'doc' => 'required|file|mimes:doc,docx|max:5120',
+            'file_name' => 'required',
             'file' => 'required',
             'file.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -415,71 +354,79 @@ $myprofile['photo'] = $photo;
 
         $acyear = AcademicYear::where($request->year);
 
-        // $ct = Carbon::today();
-        // // $cn = Carbon::now();
-
-        //     $diff = $ct->diffInDays($acyear->opening_date, false);
-
-
-        //     // dd($diff);
-
-        //     if ($diff > 0) {
-        //     session()->flash('message', 'You can not submit before the Starting date of the academic year!');
-        //     Session::flash('type', 'error');
-        //     return redirect()->back();
-        //     }
-
-
-        //     $cdiff = $ct->diffInDays($acyear->closing_date, false);
-
-
-        //     // dd($cdiff."<br>".$ct."<br>".$cn);
-
-        //     if ($cdiff < 0) {
-        //     session()->flash('message', 'You can not submit after the Closing date of the academic year!');
-        //     Session::flash('type', 'error');
-        //     return redirect()->back();
-        //     }
-
+     
 
         $con['title'] = $request->title;
         $con['year'] = $request->year;
         $con['dep_id'] = Auth::guard('student')->user()->department_id;
         $con['std_id'] = Auth::guard('student')->user()->id;
 
-     if ($request->doc) {
-         $cyr = date("Y");
-         $cmo = date("m");
+//      if ($request->file_name) {
+//          $cyr = date("Y");
+//          $cmo = date("m");
 
-         $con['file_name'] = $cyr . '/' . $cmo . '/' .$request->doc->getClientOriginalName();
-         $request->doc->store('public/upload');
+//          $con['file_name'] = $cyr . '/' . $cmo . '/' .$request->file_name->getClientOriginalName();
+//          $request->file_name->store('public/upload');
 
-        $docname = pathinfo($request->doc->getClientOriginalName(), PATHINFO_FILENAME);
+//         $docname = pathinfo($request->file_name->getClientOriginalName(), PATHINFO_FILENAME);
 
-        $docname = preg_replace('!\s+!', ' ', $docname);
-        $docname = str_replace(' ', '-', $docname);
-        $docname = strtolower($docname);
+//         $docname = preg_replace('!\s+!', ' ', $docname);
+//         $docname = str_replace(' ', '-', $docname);
+//         $docname = strtolower($docname);
 
-        $doc = $docname . '.' . $request->doc->getClientOriginalExtension();
+//         $doc = $docname . '.' . $request->file_name->getClientOriginalExtension();
 
 // $count = 0;
 // $doccount = 1;
 
 // while ($count < 1) {
-// $hasPhoto = Article::wherePhoto($doc)->first();
-// if ($hasPhoto) {
+// $hasDoc = Article::whereFileName($doc)->first();
+// if ($hasDoc) {
 // $newdocname = $docname . '_' . $doccount;
-// $doc = $newdocname . '.' . $request->doc->getClientOriginalExtension();
+// $doc = $newdocname . '.' . $request->file_name->getClientOriginalExtension();
 // $doccount++;
 // } else {
 // $count++;
 // }
 // }
-$request->doc->move(public_path('upload/' . $cyr . '/' . $cmo), $doc);
+// $request->file_name->move(public_path('upload/' . $cyr . '/' . $cmo), $doc);
 
-$doc = $cyr . '/' . $cmo . '/' . $doc;
+// $doc = $cyr . '/' . $cmo . '/' . $doc;
 
-$img['doc'] = $doc;
+// $docs['file_name'] = $doc;
+// }
+
+
+
+if ($request->file_name) {
+   $cyr = date("Y");
+         $cmo = date("m");
+$filename = pathinfo($request->file_name->getClientOriginalName(), PATHINFO_FILENAME);
+
+$filename = preg_replace('!\s+!', ' ', $filename);
+$filename = str_replace(' ', '-', $filename);
+$filename = strtolower($filename);
+
+$file = $filename . '.' . $request->file_name->getClientOriginalExtension();
+
+$count = 0;
+$filecount = 1;
+
+while ($count < 1) {
+$hasFile = Article::whereFileName($file)->first();
+if ($hasFile) {
+$newfilename = $filename . '_' . $filecount;
+$file = $newfilename . '.' . $request->file_name->getClientOriginalExtension();
+$filecount++;
+} else {
+$count++;
+}
+}
+
+$request->file_name->move(public_path('upload/' . $cyr . '/' . $cmo), $file);
+ $file = $cyr . '/' . $cmo . '/' . $file;
+
+$con['file_name'] = $file;
 }
 
 
@@ -558,7 +505,7 @@ $img['photo'] = $photo;
         // dd($user);
         $name = $user->first_name;
         // $umail = $user->email;
-        $data = array('name'=>$name, 'aname'=>$con->name);
+        $data = array('name'=>$name, 'aname'=>$con->first_name);
         // dd($user->email);
       Mail::send('mail', $data, function($message) {
         $user=Coordinator::orderBy('id', 'desc')->first();
@@ -977,7 +924,7 @@ $img['photo'] = $photo;
 
         Comment::create($com);
 
-        session()->flash('message', 'Comment Cdded Successfully :)');
+        session()->flash('message', 'Comment Added Successfully :)');
         Session::flash('type', 'success');
         return redirect()->back();
 

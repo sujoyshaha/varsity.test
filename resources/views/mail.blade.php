@@ -1,2 +1,3 @@
+
 <h1>Hi, {{ $name }}</h1>
-<p>Sending Mail from Laravel. {{ $aname }}</p>
+<p>A student has been posted a New Article.</p>

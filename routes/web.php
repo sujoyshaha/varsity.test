@@ -292,5 +292,7 @@ Route::get('article/{id}', 'ManagerController@getSingleArticle')->name('single-m
 
 Route::get('dashboard', 'ManagerController@index')->name('manager-dashboard');
 
+Route::get('download-approved', 'ManagerController@zipmanDownload')->name('mandownload-approved');
+
 
 });

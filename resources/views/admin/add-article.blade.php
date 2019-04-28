@@ -60,7 +60,7 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Article doc file</label>
-                        <input type="file" class="form-control" id="opening-date" name="doc" placeholder="DD/MM" value="{{old('doc')}}" >
+                        <input type="file" class="form-control" id="opening-date" name="file_name" placeholder="DD/MM" value="{{old('doc')}}" >
                     </div>
 
                     <div class="form-group">

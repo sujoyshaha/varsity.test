@@ -105,11 +105,11 @@
                                 </a>
                                     </li>
 
-                                <li>
+                                {{-- <li>
                                     <a href="{{route('alladmin')}}">
                                     <i class=" mdi mdi-account-multiple"></i> <span> All Admin</span>
                                     </a>
-                                </li>                                
+                                </li>   --}}                              
 
                                 <li>
                                     <a href="{{route('allmanager')}}">
