@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
 use App\Admin;
 use App\AcademicYear;
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Auth;
+
+use Zip;
 
 
 class AdminController extends Controller
@@ -526,7 +529,7 @@ class AdminController extends Controller
            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:student'],
             'phone' => ['required', 'string'],
           //  'role' => ['required', 'numeric','max:20'],
-            'department_id' => 'required|exists:departments,id',
+            'department_id' => 'required|unique:departments,id',
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
 
@@ -1661,4 +1664,39 @@ $myprofile['photo'] = $photo;
 
     //     return view('admin.reports', $data);
     // }
+
+    public function zipDownload()
+    {
+        // Storage::delete('public/test.zip');
+
+        // File::delete('approved.zip');
+
+
+        $zip = Zip::create(public_path('approved.zip'));
+
+        // using array as parameter
+        $arts = Article::where('file_status', '>', 2)->get();
+        // $arts = Article::all();
+
+        // dd($arts);
+        foreach ($arts as $art) {
+           $zip->add(public_path('upload/'.$art->file_name));
+        }
+        // $files = ' ';
+        // foreach ($arts as $art) {
+        //    $files .= (public_path('upload/'.$art->file_name)).', ';
+        // }
+
+
+
+        // $zip->add( array($files));
+        $zip->close();
+
+        // $zip->add('/path/to/my/file');
+
+        // $files = glob('upload/');
+
+
+        return redirect('approved.zip');
+    }
 }

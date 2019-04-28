@@ -130,7 +130,7 @@
 
                             </div>
 
-<div class="col-xl-6">
+            <div class="col-xl-6">
 
 
 
@@ -144,30 +144,7 @@
                                         <div class="col-md-12">
                                             
 
-                                        @php
-
-                                        $totalcon = 0;
-                                        foreach($reps as $rp => $articles){
-
-                                          $totalcon = $totalcon + $articles->count();
-
-                                        }
-
-                                        if ($totalcon){
-                                          $scper = (100/$totalcon);
-                                        }else{
-                                        $scper = 0;
-                                        }
-
-                                        
-                                          
-                                        @endphp
-
-
-
-
-                                        @foreach($reps as $rp => $articles)
-
+                                    
 
                                                    
 
@@ -177,37 +154,46 @@
 
 
 
-                  <div class="card-box widget-chart-one gradient-success bx-shadow-lg">
+              <div class="card-box widget-chart-one gradient-success bx-shadow-lg">
                   <div class="float-left">
-                  <input data-plugin="knob" data-width="80" data-height="80" data-linecap=round data-fgColor="#ffffff" data-bgcolor="rgba(255,255,255,0.2)" value="{{ round((count($articles))*$scper, 2) }}" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".2" />
-                </div>
-              <div class="widget-chart-one-content text-right">
-                  <p class="text-white mb-0 mt-2">
-
-                      @foreach($deps as $dep)
-
-                                               @if($dep->id == $rp)
-                                                
-                                                  {{ $dep->name }}
-
-                                                  @endif
-                                                
-                                              @endforeach
-
-                  
-
-
-                </p>
-                  <h3 class="text-white">{{ round((count($articles))*$scper, 2) }}%</h3>
+                  <input data-plugin="knob" data-width="80" data-height="80" data-linecap=round data-fgColor="#ffffff" data-bgcolor="rgba(255,255,255,0.2)" value="{{$accepted}}" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".2" />
+                  </div>
+                  <div class="widget-chart-one-content text-right">
+                      <p class="text-white mb-0 mt-2">Accepted Articles</p>
+                      <h3 class="text-white">{{$accepted}}%</h3>
+                  </div>
               </div>
-          </div>
 
-        
+               <div class="card-box widget-chart-one gradient-success bx-shadow-lg">
+                  <div class="float-left">
+                  <input data-plugin="knob" data-width="80" data-height="80" data-linecap=round data-fgColor="#ffffff" data-bgcolor="rgba(255,255,255,0.2)" value="{{$pending}}" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".2" />
+                  </div>
+                  <div class="widget-chart-one-content text-right">
+                      <p class="text-white mb-0 mt-2">Pending Articles</p>
+                      <h3 class="text-white">{{$pending}}%</h3>
+                  </div>
+              </div>       
 
-
-                                            @endforeach
-
-
+               <div class="card-box widget-chart-one gradient-success bx-shadow-lg">
+                  <div class="float-left">
+                  <input data-plugin="knob" data-width="80" data-height="80" data-linecap=round data-fgColor="#ffffff" data-bgcolor="rgba(255,255,255,0.2)" value="{{$withcom}}" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".2" />
+                  </div>
+                  <div class="widget-chart-one-content text-right">
+                      <p class="text-white mb-0 mt-2">Commented Articles</p>
+                      <h3 class="text-white">{{$withcom}}%</h3>
+                  </div>
+              </div>    
+                                           
+               <div class="card-box widget-chart-one gradient-success bx-shadow-lg">
+                  <div class="float-left">
+                  <input data-plugin="knob" data-width="80" data-height="80" data-linecap=round data-fgColor="#ffffff" data-bgcolor="rgba(255,255,255,0.2)" value="{{$acceptedcommented}}" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".2" />
+                  </div>
+                  <div class="widget-chart-one-content text-right">
+                      <p class="text-white mb-0 mt-2">Commented & Accepted</p>
+                      <h3 class="text-white">{{$acceptedcommented}}%</h3>
+                  </div>
+              </div>    
+                     
                                  
                                        
                                         </div> <!-- end col -->
@@ -244,35 +230,6 @@
 @section('scripts')
 
 
-<script type="text/javascript">
-window.onload = function() {
-
-var options = {
-  title: {
-    text: "Website Traffic Source"
-  },
-  data: [{
-      type: "pie",
-      startAngle: 45,
-      showInLegend: "true",
-      legendText: "{label}",
-      indexLabel: "{label} ({y})",
-      yValueFormatString:"#,##0.#"%"",
-      dataPoints: [
-        { label: "Organic", y: 36 },
-        { label: "Email Marketing", y: 31 },
-        { label: "Referrals", y: 7 },
-        { label: "Twitter", y: 7 },
-        { label: "Facebook", y: 6 },
-        { label: "Google", y: 10 },
-        { label: "Others", y: 3 }
-      ]
-  }]
-};
-$("#chartContainer").CanvasJSChart(options);
-
-}
-</script>
 
 
 
@@ -292,33 +249,21 @@ var options = {
   data: [{
     type: "pie",
     showInLegend: true,
-    toolTipContent: "<b>{name}</b>: ${y} (#percent%)",
+    toolTipContent: "<b>{name}</b>: {y} (#percent%)",
     indexLabel: "{name}",
     legendText: "{name} (#percent%)",
     indexLabelPlacement: "inside",
     dataPoints: [
 
 
+      { y: {{$withcom}}, name: "Commented" },
+      { y: {{$pending}}, name: "Pending" },
+      { y: {{$accepted}}, name: "Accepted" },
+      { y: {{$acceptedcommented}}, name: "Commented & Accepted" },
+  
 
-  @foreach($reps as $rp => $articles)
-            
-         
+      
 
-      { y: {{ round((count($articles))*$scper, 2) }}, 
-
-    @foreach($deps as $dep)
-
-        @if($dep->id == $rp)
-                                                
-        name: "{{ $dep->name }}" },
-
-       @endif
-
- @endforeach
-
-
-
- @endforeach
 
       
     ]

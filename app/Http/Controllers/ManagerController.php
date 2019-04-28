@@ -15,6 +15,7 @@ use App\Manager;
 use App\ConPhoto;
 use App\Article;
 use Cookie;
+use Zip;
 // use App\Auth;
 
 

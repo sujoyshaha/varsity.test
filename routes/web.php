@@ -161,6 +161,9 @@ Route::get('number-of-articles', 'AdminController@getArticleNumbers')->name('num
 
 
 
+Route::get('download-approved', 'AdminController@zipDownload')->name('download-approved');
+
+
 });
 
 
@@ -217,6 +220,15 @@ Route::get('articles', 'FacultyController@getFacultyarticles')->name('facu-artic
 Route::get('article/{id}', 'FacultyController@getSingleArticle')->name('single-facuarticle');
 
 Route::get('dashboard', 'FacultyController@index')->name('faculty-dashboard');
+
+
+
+Route::get('percentage-of-articles', 'FacultyController@getfacultyArticlePercentage')->name('faculty-percentageof-articles');
+Route::get('number-of-articles', 'FacultyController@getfacultyArticleNumbers')->name('faculty-numberof-articles');
+
+
+
+
 
 
 

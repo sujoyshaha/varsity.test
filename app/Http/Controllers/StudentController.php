@@ -11,11 +11,13 @@ use App\Department;
 use App\Article;
 use App\Comment;
 use App\Student;
+use App\Coordinator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 // use App\ConPhoto;
 use App\ArtImg;
+use Mail;
 //use Cookie;
 // use App\Auth;
 
@@ -404,7 +406,7 @@ $myprofile['photo'] = $photo;
         $this->validate($request,[
             'title' => 'required|string|max:255',
             'year' => 'required',
-            'doc' => 'required|file|mimes:doc,docx,pdf|max:5120',
+            'doc' => 'required|file|mimes:doc,docx|max:5120',
             'file' => 'required',
             'file.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -537,13 +539,39 @@ $img['photo'] = $photo;
 
 
             ArtImg::create($img);
+
+
            
         }
 
-        
+        // // Please specify your Mail Server - Example: mail.example.com.
+        //     ini_set("SMTP","smtp.gmail.com");
+
+        //     // Please specify an SMTP Number 25 and 8889 are valid SMTP Ports.
+        //     ini_set("smtp_port","587");
+
+        //     // Please specify the return address to use
+        //     ini_set('sendmail_from', '1000048@daffodil.ac');
+
+        $user=Coordinator::orderBy('id', 'desc')->first();
+
+        // dd($user);
+        $name = $user->first_name;
+        // $umail = $user->email;
+        $data = array('name'=>$name, 'aname'=>$con->name);
+        // dd($user->email);
+      Mail::send('mail', $data, function($message) {
+        $user=Coordinator::orderBy('id', 'desc')->first();
+         $message->to($user->email , 'sujoy')->subject
+            ('New Article added');
+         $message->from('1000048@daffodil.ac','Magazine');
+      });
+            
 
         session()->flash('message', 'Article Created  Successfully :)');
         Session::flash('type', 'success');
+        
+
         return redirect()->back();
     }
 

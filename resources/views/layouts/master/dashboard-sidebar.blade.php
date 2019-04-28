@@ -192,6 +192,30 @@
                                 </a>
                             </li>
 
+                            <li>
+                                <a href="javascript: void(0);"><i class="  mdi mdi-chart-line"></i><span> Reports </span> <span class="menu-arrow"></span></a>
+                                <ul class="nav-second-level" aria-expanded="false">
+
+                                    <li>
+                                        <a href="{{route('faculty-numberof-articles')}}">
+                                        <i class="  mdi mdi-chart-line"></i> <span> Number Of Articles </span>
+                                        </a>
+                                    </li>                                    
+
+
+                                    <li>
+                                        <a href="{{route('faculty-percentageof-articles')}}">
+                                        <i class="  mdi mdi-chart-line"></i> <span> Percentage Of Articles </span>
+                                        </a>
+                                    </li>
+                                 
+                            
+                            
+                            </ul>
+
+                            </li>
+
+
                             @elseif(Auth::guard('coordinator')->check())
                               <li>
                                 <a href="{{route('cord-dashboard')}}">

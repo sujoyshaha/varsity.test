@@ -23,6 +23,10 @@ class Comment extends Model
         return $this->belongsTo(Admin::class, 'user_id');
     }
 
+    public function coordinator() {
+        return $this->belongsTo(Coordinator::class, 'user_id');
+    }
+
     public function con() {
         return $this->belongsTo(Article::class, 'con_id');
     }

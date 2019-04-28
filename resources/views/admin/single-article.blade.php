@@ -233,8 +233,55 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid"/>
-                                        <p class="text-secondary text-center">15 Minutes Ago</p>
+
+
+                                                @if ($com->user_role == 1)
+
+                                                <img src="{{asset('upload/' .$com->admin->photo)}}" class="img img-rounded img-fluid"/>
+
+                                                <p class="text-secondary text-center">{{$com->created_at}}</p>
+
+
+                                                
+
+                                                @elseif ($com->user_role == 2)
+
+                                                <img src="{{asset('upload/' .$com->coordinator->photo)}}" class="img img-rounded img-fluid"/>
+                                                <p class="text-secondary text-center">{{$com->created_at}}</p>
+
+
+                                               
+
+                                                @elseif ($com->user_role == 3)
+
+                                                <img src="{{asset('upload/' .$com->student->photo)}}" class="img img-rounded img-fluid"/>
+
+
+                                                <p class="text-secondary text-center">{{$com->created_at}}</p>
+
+
+
+
+                                                @else
+                                                <img src="{{asset('assets/images/no-image.png')}}" class="img img-rounded img-fluid"/>
+
+
+
+
+
+                                               
+
+                                                @endif
+
+
+
+
+
+                                        
+
+
+
+                                        
                                     </div>
                                     <div class="col-md-10">
                                         <p>
@@ -242,12 +289,15 @@
 
                                                 @if ($com->user_role == 1)
 
-                                                <strong>{{Auth::guard()->user()->first_name}}</strong>
+                                                <strong>{{$com->admin->first_name}} {{$com->admin->last_name}}</strong>
+
+                                                @elseif ($com->user_role == 2)
+
+                                                <strong>{{$com->coordinator->first_name}} {{$com->coordinator->last_name}}</strong>
 
                                                 @elseif ($com->user_role == 3)
 
-                                                <strong>{{Auth::guard()->user('student')->first_name}}</strong>
-
+                                                <strong>{{$com->student->first_name}} {{$com->student->last_name}}</strong>
 
                                                 @endif
 
@@ -350,7 +400,7 @@
                     
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">                    
-                                <button class="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Summit comment</button>
+                                <button class="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Submit comment</button>
                             </div>
                         </div>            
                     </form>
