@@ -345,7 +345,9 @@ $myprofile['photo'] = $photo;
         $this->validate($request,[
             'title' => 'required|string|max:255',
             'year' => 'required',
-            'file_name' => 'required',
+            // 'file_name' => 'required',
+
+            'file_name' => 'required|file|mimes:doc,docx,pdf|max:5120',
             'file' => 'required',
             'file.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -361,40 +363,6 @@ $myprofile['photo'] = $photo;
         $con['dep_id'] = Auth::guard('student')->user()->department_id;
         $con['std_id'] = Auth::guard('student')->user()->id;
 
-//      if ($request->file_name) {
-//          $cyr = date("Y");
-//          $cmo = date("m");
-
-//          $con['file_name'] = $cyr . '/' . $cmo . '/' .$request->file_name->getClientOriginalName();
-//          $request->file_name->store('public/upload');
-
-//         $docname = pathinfo($request->file_name->getClientOriginalName(), PATHINFO_FILENAME);
-
-//         $docname = preg_replace('!\s+!', ' ', $docname);
-//         $docname = str_replace(' ', '-', $docname);
-//         $docname = strtolower($docname);
-
-//         $doc = $docname . '.' . $request->file_name->getClientOriginalExtension();
-
-// $count = 0;
-// $doccount = 1;
-
-// while ($count < 1) {
-// $hasDoc = Article::whereFileName($doc)->first();
-// if ($hasDoc) {
-// $newdocname = $docname . '_' . $doccount;
-// $doc = $newdocname . '.' . $request->file_name->getClientOriginalExtension();
-// $doccount++;
-// } else {
-// $count++;
-// }
-// }
-// $request->file_name->move(public_path('upload/' . $cyr . '/' . $cmo), $doc);
-
-// $doc = $cyr . '/' . $cmo . '/' . $doc;
-
-// $docs['file_name'] = $doc;
-// }
 
 
 

@@ -43,7 +43,9 @@
                                                     </div>
                                                     <div class="form-group">
                                                       <label for="exampleInputPassword1">Opening Date</label>
-                                                      <input type="date" class="form-control" id="opening-date" name="opening_date" placeholder="DD/MM" >
+                                                      <input type="date" class="form-control" id="opening_date" name="opening_date" placeholder="DD/MM" >
+
+                                                      
                                                     </div>
 
                                                     <div class="form-group">
@@ -137,5 +139,33 @@ clearInterval(timerInterval)
 })(els[i]);
 }
 </script>
+{{-- <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script> --}}
+<script>
+
+
+ var dt= new Date();
+   var yyyy = dt.getFullYear().toString();
+   var mm = (dt.getMonth()+1).toString(); // getMonth() is zero-based
+   var dd  = dt.getDate().toString();
+   var min = yyyy +'-'+ (mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
+
+$('#opening_date, #closing-date, #final-date').prop('min',min);
+
+</script>
+
+{{-- <script>
+
+
+ var dtt= new Date();
+   var yyyyy = dtt.getFullYear().toString();
+   var mmm = (dtt.getMonth()+1).toString(); // getMonth() is zero-based
+   var ddd  = dtt.getDate().toString();
+   var minn = yyyyy +'-'+ (mmm[1]?mmm:"0"+mmm[0]) +'-'+ (ddd[1]?ddd:"0"+ddd[0]); // padding
+
+$('#closing_date').prop('minn',minn);
+
+</script> --}}
+
+
 
 @endsection
