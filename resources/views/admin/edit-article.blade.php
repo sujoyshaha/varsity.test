@@ -25,12 +25,12 @@
 
                    
 
-    <div class="row">
+    <div class="">
 
       
       
      
-                               <div class="card-box">
+                               <div class="card-box col-8">
                                 
         
       

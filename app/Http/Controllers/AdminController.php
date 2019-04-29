@@ -20,6 +20,7 @@ use App\Comment;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 use Auth;
 
 use Zip;
@@ -762,7 +763,7 @@ $myprofile['photo'] = $photo;
         $fdiff = $cd->diffInDays($request->final_date, false);
 
         if ($fdiff < 1) {
-        session()->flash('message', 'The final date should be before closing date!');
+        session()->flash('message', 'The final date should not be before closing date!');
         Session::flash('type', 'error');
         return redirect()->back();
         }

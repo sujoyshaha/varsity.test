@@ -97,11 +97,16 @@ class ManagerController extends Controller
 
 
 
-        $data['totalArticles'] = Article::whereDepId($dep_id)->count();
+        // $data['totalArticles'] = Article::whereDepId($dep_id)->count();
+        // $data['totalDepartments'] = Department::all()->count();
+        // $data['totalStudents'] = Student::whereDepartmentId($dep_id)->count();
+        // $data['totalComments'] = Comment::whereIn('user_role',[2])->count();
+        $data['yourComments'] = Comment::all()->count();
+
+             $data['totalArticles'] = Article::all()->count();
         $data['totalDepartments'] = Department::all()->count();
-        $data['totalStudents'] = Student::whereDepartmentId($dep_id)->count();
-        $data['totalComments'] = Comment::whereIn('user_role',[2])->count();
-        $data['yourComments'] = Comment::whereUserId($user_id)->whereIn('user_role',[2])->count();
+        $data['totalStudents'] = Student::all()->count();
+        $data['totalComments'] = Comment::all()->count();
 
          
 
